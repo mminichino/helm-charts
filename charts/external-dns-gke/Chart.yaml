@@ -1,8 +1,8 @@
 apiVersion: v2
-name: external-dns
+name: external-dns-gke
 description: A Helm chart for External DNS on GKE with Google Cloud DNS support
 type: application
-version: 0.1.1
+version: 0.2.0
 appVersion: "0.19.0"
 keywords:
   - external-dns
