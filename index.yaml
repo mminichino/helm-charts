@@ -22,4 +22,47 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/external-dns-0.1.1/external-dns-0.1.1.tgz
     version: 0.1.1
-generated: "2025-09-16T23:36:22.35943123Z"
+  external-dns-gke:
+  - apiVersion: v2
+    appVersion: 0.19.0
+    created: "2025-09-16T23:47:30.794825019Z"
+    description: A Helm chart for External DNS on GKE with Google Cloud DNS support
+    digest: 4a8118f15e5dd097507231eb21b6e9a6fa0e132693db631863aa2faf12f059b0
+    home: https://github.com/kubernetes-sigs/external-dns
+    keywords:
+    - external-dns
+    - dns
+    - gke
+    - google-cloud
+    maintainers:
+    - name: External DNS Team
+      url: https://github.com/kubernetes-sigs/external-dns
+    name: external-dns-gke
+    sources:
+    - https://github.com/kubernetes-sigs/external-dns
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/external-dns-gke-0.2.0/external-dns-gke-0.2.0.tgz
+    version: 0.2.0
+  session-api:
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2025-09-16T23:47:30.935513657Z"
+    description: Basic session API using Redis
+    digest: 3f90c5d7a6eb7b797bc1e5143b5beb8745c4331f2ac5add7c02bba75337dc000
+    home: https://github.com/mminichino/redis-session-api-test
+    keywords:
+    - session-api
+    - rest
+    - redis
+    maintainers:
+    - name: Michael Minichino
+      url: https://github.com/mminichino/redis-session-api-test
+    name: session-api
+    sources:
+    - https://github.com/mminichino/redis-session-api-test
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-09-16T23:47:30.935519629Z"
