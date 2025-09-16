@@ -26,8 +26,6 @@ jobs:
 
       - name: Install Helm
         uses: azure/setup-helm@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
@@ -40,7 +38,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .cr-release-packages
+          path: .cr-index
 
       - name: Deploy to GitHub Pages
         id: deployment
