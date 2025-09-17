@@ -1,0 +1,69 @@
+apiVersion: app.redislabs.com/v1
+kind: RedisEnterpriseCluster
+metadata:
+  name: redis-enterprise-cluster
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: redis
+spec:
+  redisEnterpriseNodeResources:
+    limits:
+      cpu: {{ .Values.node.cpu }}
+      memory: {{ .Values.node.memory }}
+    requests:
+      cpu: {{ .Values.node.cpu }}
+      memory: {{ .Values.node.memory }}
+  nodes: {{ .Values.node.count }}
+  persistentSpec:
+    enabled: true
+    storageClassName: "{{ .Values.storage.class }}"
+    volumeSize: 20Gi
+  username: demo@redis.com
+  {{- if and .Values.tls.certificate .Values.tls.key }}
+  certificates:
+    proxyCertificateSecretName: proxy-cert-secret
+  {{- end }}
+  {{- if and .Values.ingress.enabled .Values.dns.domain }}
+  ingressOrRouteSpec:
+    apiFqdnUrl: "redis-api.{{ .Values.dns.domain }}"
+    dbFqdnSuffix: "{{ .Values.dns.domain }}"
+    {{- if or (eq .Values.ingress.type "nginx") (eq .Values.ingress.type "haproxy") }}
+    method: ingress
+    {{- else if eq .Values.ingress.type "route" }}
+    method: openShiftRoute
+    {{- else }}
+    method: istio
+    {{- end }}
+    {{- if eq .Values.ingress.type "haproxy" }}
+    ingressAnnotations:
+      kubernetes.io/ingress.class: haproxy
+      ingress.kubernetes.io/ssl-passthrough: "true"
+    {{- else if eq .Values.ingress.type "nginx" }}
+    ingressAnnotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    {{- end }}
+  {{- end }}
+  {{- if .Values.ingress.enabled }}
+  uiServiceType: ClusterIP
+  {{- else }}
+  uiServiceType: LoadBalancer
+  {{- end }}
+  servicesRiggerSpec:
+    {{- if .Values.ingress.enabled }}
+    databaseServiceType: 'cluster_ip,headless'
+    {{- else }}
+    databaseServiceType: 'load_balancer,cluster_ip'
+    {{- end }}
+    serviceNaming: bdb_name
+  services:
+    apiService:
+      {{- if .Values.ingress.enabled }}
+      type: ClusterIP
+      {{- else }}
+      type: LoadBalancer
+      {{- end }}
+  {{- if .Values.license }}
+  license: |
+    {{ .Values.license }}
+  {{- end }}

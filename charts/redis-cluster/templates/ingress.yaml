@@ -1,0 +1,33 @@
+#
+{{- if and .Values.ingress.enabled .Values.dns.domain }}
+{{- if or (eq .Values.ingress.type "nginx") (eq .Values.ingress.type "haproxy") }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: redis-enterprise-cluster-ui
+  namespace: {{ .Release.Namespace }}
+  {{- if eq .Values.ingress.type "haproxy" }}
+  annotations:
+    kubernetes.io/ingress.class: haproxy
+    haproxy-ingress.github.io/ssl-passthrough: "true"
+    haproxy-ingress.github.io/server-ssl: "true"
+  {{- else }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+  {{- end }}
+spec:
+  rules:
+    - host: "redis-ui.{{ .Values.dns.domain }}"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: redis-enterprise-cluster-ui
+                port:
+                  number: 8443
+{{- end }}
+{{- end }}

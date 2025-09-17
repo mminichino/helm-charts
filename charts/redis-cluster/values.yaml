@@ -1,0 +1,23 @@
+#
+
+license: ""
+
+node:
+  count: 3
+  cpu: "4"
+  memory: "8Gi"
+
+ingress:
+  enabled: false
+  type: "nginx"
+
+storage:
+  class: "standard"
+
+dns:
+  domain: ""
+
+tls:
+  enabled: false
+  certificate: ""
+  key: ""
