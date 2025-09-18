@@ -1,0 +1,15 @@
+apiVersion: v2
+name: redis-database
+description: Deploy a REDB resource with the Redis Enterprise Operator
+type: application
+version: 0.1.0
+appVersion: "7.22.0"
+keywords:
+  - kubernetes
+  - redis
+home: https://github.com/mminichino/helm-charts
+sources:
+  - https://github.com/mminichino/helm-charts
+maintainers:
+  - name: Michael Minichino
+    url: https://github.com/mminichino/helm-charts

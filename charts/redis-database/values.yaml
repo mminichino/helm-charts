@@ -1,0 +1,15 @@
+#
+
+name: "redb"
+password: "password"
+cluster: "redis-enterprise-cluster"
+memory: "1GB"
+replication: true
+shards: 1
+placement: dense
+port: 12000
+eviction: noeviction
+modules:
+  - ReJSON
+  - search
+  - timeseries

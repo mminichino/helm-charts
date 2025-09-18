@@ -1,0 +1,24 @@
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseDatabase
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: redis-database
+spec:
+  redisEnterpriseCluster:
+    name: {{ .Values.cluster }}
+  proxyPolicy: all-master-shards
+  memorySize: {{ .Values.memory }}
+  databaseSecretName: {{ .Values.name }}
+  replication: {{ .Values.replication }}
+  shardCount: {{ .Values.shards }}
+  shardsPlacement: {{ .Values.placement }}
+  type: redis
+  databasePort: {{ .Values.port }}
+  persistence: aofEverySecond
+  evictionPolicy: {{ .Values.eviction }}
+  modulesList:
+    {{- range .Values.modules }}
+    - name: {{ . }}
+    {{- end }}
