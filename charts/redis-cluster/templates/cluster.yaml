@@ -17,7 +17,7 @@ spec:
   persistentSpec:
     enabled: true
     storageClassName: "{{ .Values.storage.class }}"
-    volumeSize: 20Gi
+    volumeSize: {{ .Values.node.disk }}
   username: demo@redis.com
   {{- if and .Values.tls.certificate .Values.tls.key }}
   certificates:
