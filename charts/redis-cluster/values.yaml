@@ -22,3 +22,4 @@ tls:
   name: "proxy"
   certificate: ""
   key: ""
+  secret: ""

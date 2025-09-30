@@ -19,7 +19,7 @@ spec:
     storageClassName: "{{ .Values.storage.class }}"
     volumeSize: {{ .Values.node.disk }}
   username: demo@redis.com
-  {{- if and .Values.tls.certificate .Values.tls.key }}
+  {{- if or (and .Values.tls.certificate .Values.tls.key) .Values.tls.secret }}
   certificates:
     proxyCertificateSecretName: proxy-cert-secret
   {{- end }}
