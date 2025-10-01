@@ -4,7 +4,7 @@ metadata:
   name: redis-cluster-uninstall
   namespace: {{ .Release.Namespace }}
   annotations:
-    "helm.sh/hook": pre-delete
+    "helm.sh/hook": post-delete
     "helm.sh/hook-weight": "0"
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
@@ -16,6 +16,13 @@ spec:
       containers:
         - name: redis-cluster-uninstall
           image: registry.k8s.io/kubectl:v1.34.1
-          command:
-            - |
-              patch rec {{ .Values.name }} -p '{"metadata":{"finalizers":null}}' --type=merge -n {{ .Release.Namespace }}
+          command: ["kubectl"]
+          args:
+            - patch
+            - rec
+            - {{ .Values.name }}
+            - -n
+            - {{ .Release.Namespace }}
+            - --type=merge
+            - -p
+            - '{"metadata":{"finalizers":[]}}'
