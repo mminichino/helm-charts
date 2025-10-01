@@ -1,5 +1,7 @@
 #
 
+name: "redis-enterprise-cluster"
+
 license: ""
 
 node:
