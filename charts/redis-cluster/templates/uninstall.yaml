@@ -14,8 +14,8 @@ spec:
       serviceAccountName: redis-enterprise-operator
       restartPolicy: Never
       containers:
-        - name: cleaner
-          image: bitnami/kubectl:latest
+        - name: redis-cluster-uninstall
+          image: rancher/kubectl:v1.33.5
           command:
             - |
               kubectl patch rec {{ .Values.name }} -p '{"metadata":{"finalizers":null}}' --type=merge -n {{ .Release.Namespace }}
