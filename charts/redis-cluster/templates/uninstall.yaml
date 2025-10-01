@@ -4,7 +4,7 @@ metadata:
   name: redis-cluster-uninstall
   namespace: {{ .Release.Namespace }}
   annotations:
-    "helm.sh/hook": pre-delete
+    "helm.sh/hook": post-delete
     "helm.sh/hook-weight": "0"
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
@@ -15,14 +15,28 @@ spec:
       restartPolicy: Never
       containers:
         - name: redis-cluster-uninstall
-          image: registry.k8s.io/kubectl:v1.34.1
-          command: ["kubectl"]
-          args:
-            - patch
-            - rec
-            - {{ .Values.name }}
-            - -n
-            - {{ .Release.Namespace }}
-            - --type=merge
-            - -p
-            - '{"metadata":{"finalizers":null}}'
+          image: alpine:3.19
+          command:
+          - /bin/sh
+          - -c
+          - |
+            set -e
+
+            echo "Installing kubectl"
+            apk add --no-cache curl
+            curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+            chmod +x kubectl
+            mv kubectl /usr/local/bin/
+
+            NS="{{ .Release.Namespace }}"
+            REC="{{ .Values.name }}"
+
+            echo "Checking if rec/$REC exists in $NS namespace"
+
+            if kubectl get rec "$REC" -n "$NS" 2>/dev/null; then
+              echo "Removing finalizers"
+              kubectl patch rec "$REC" -p '{"metadata":{"finalizers":null}}' --type=merge -n "$NS"
+              echo "Done"
+            fi
+
+            echo "Job completed"
