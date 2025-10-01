@@ -4,9 +4,9 @@ metadata:
   name: redis-cluster-uninstall
   namespace: {{ .Release.Namespace }}
   annotations:
-    "helm.sh/hook": post-delete
+    "helm.sh/hook": pre-delete
     "helm.sh/hook-weight": "0"
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
   ttlSecondsAfterFinished: 300
   template:
@@ -25,4 +25,4 @@ spec:
             - {{ .Release.Namespace }}
             - --type=merge
             - -p
-            - '{"metadata":{"finalizers":[]}}'
+            - '{"metadata":{"finalizers":null}}'
