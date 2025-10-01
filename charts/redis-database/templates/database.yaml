@@ -8,7 +8,9 @@ metadata:
 spec:
   redisEnterpriseCluster:
     name: {{ .Values.cluster }}
-  proxyPolicy: all-master-shards
+  {{- if not .Values.ossCluster }}
+  proxyPolicy: {{ .Values.proxyPolicy }}
+  {{- end }}
   memorySize: {{ .Values.memory }}
   databaseSecretName: {{ .Values.name }}
   replication: {{ .Values.replication }}
@@ -16,9 +18,20 @@ spec:
   shardsPlacement: {{ .Values.placement }}
   type: redis
   databasePort: {{ .Values.port }}
-  persistence: aofEverySecond
+  persistence: {{ .Values.persistence }}
   evictionPolicy: {{ .Values.eviction }}
+  {{- if .Values.tls.enabled }}
+  tlsMode: "enabled"
+  {{- end }}
+  {{- if .Values.tls.certificates }}
+  clientAuthenticationCertificates:
+    {{- range .Values.tls.certificates }}
+    - {{ . }}
+    {{- end }}
+  {{- end }}
+  {{- if .Values.modules }}
   modulesList:
     {{- range .Values.modules }}
     - name: {{ . }}
     {{- end }}
+  {{- end }}

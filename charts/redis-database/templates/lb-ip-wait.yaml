@@ -1,0 +1,28 @@
+{{- if eq .Values.ingress.type "lb" }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: lb-ip-wait
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      serviceAccountName: redis-enterprise-operator
+      restartPolicy: Never
+      containers:
+        - name: lb-ip-wait
+          image: registry.k8s.io/kubectl:v1.34.1
+          command: ["kubectl"]
+          args:
+            - wait
+            - '--for=jsonpath={.status.loadBalancer.ingress[0].ip}'
+            - "service/{{ .Values.name }}-load-balancer"
+            - --timeout=5m
+            - -n
+            - {{ .Release.Namespace }}
+{{- end }}

@@ -9,7 +9,15 @@ shards: 1
 placement: dense
 port: 12000
 eviction: noeviction
+ossCluster: false
+proxyPolicy: all-master-shards
+persistence: aofEverySecond
 modules:
   - ReJSON
   - search
   - timeseries
+ingress:
+  type: "none"
+tls:
+  enabled: false
+  certificates: []
