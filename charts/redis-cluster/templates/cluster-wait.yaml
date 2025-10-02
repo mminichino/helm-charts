@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cluster-wait
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      serviceAccountName: redis-enterprise-operator
+      restartPolicy: Never
+      containers:
+        - name: cluster-wait
+          image: registry.k8s.io/kubectl:v1.34.1
+          command: ["kubectl"]
+          args:
+            - wait
+            - '--for=jsonpath={.status.state}=Running'
+            - "rec/{{ .Values.name }}"
+            - --timeout=10m
+            - -n
+            - {{ .Release.Namespace }}
