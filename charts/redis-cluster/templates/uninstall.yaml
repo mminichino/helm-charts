@@ -4,7 +4,7 @@ metadata:
   name: redis-cluster-uninstall
   namespace: {{ .Release.Namespace }}
   annotations:
-    "helm.sh/hook": post-delete
+    "helm.sh/hook": pre-delete
     "helm.sh/hook-weight": "0"
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
@@ -25,7 +25,7 @@ spec:
               NS="{{ .Release.Namespace }}"
               REC="{{ .Values.name }}"
 
-              echo "Checking if rec/$REC exists in $NS namespace"
+              kubectl delete rec "$REC" -n "$NS"
 
               if kubectl get rec "$REC" -n "$NS" 2>/dev/null; then
                 echo "Removing finalizers"
