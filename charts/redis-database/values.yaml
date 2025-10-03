@@ -1,7 +1,7 @@
 #
 
 name: "redb"
-password: "password"
+password: ""
 cluster: "redis-enterprise-cluster"
 memory: "1GB"
 replication: true
