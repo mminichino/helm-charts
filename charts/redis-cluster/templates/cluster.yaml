@@ -8,10 +8,10 @@ metadata:
 spec:
   redisEnterpriseNodeResources:
     limits:
-      cpu: {{ .Values.node.cpu }}
+      cpu: {{ .Values.node.cpu | quote }}
       memory: {{ .Values.node.memory }}
     requests:
-      cpu: {{ .Values.node.cpu }}
+      cpu: {{ .Values.node.cpu | quote }}
       memory: {{ .Values.node.memory }}
   nodes: {{ .Values.node.count }}
   persistentSpec:
