@@ -7,7 +7,7 @@ metadata:
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "0"
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
   ttlSecondsAfterFinished: 300
   template:
@@ -22,7 +22,7 @@ spec:
             - wait
             - '--for=jsonpath={.status.loadBalancer.ingress[0].ip}'
             - "service/{{ .Values.name }}-load-balancer"
-            - --timeout=5m
+            - --timeout=10m
             - -n
             - {{ .Release.Namespace }}
 {{- end }}
