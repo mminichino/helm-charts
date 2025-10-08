@@ -64,6 +64,5 @@ spec:
       type: LoadBalancer
       {{- end }}
   {{- if .Values.license }}
-  license: |
-    {{ .Values.license }}
+  license: {{ .Values.license | quote }}
   {{- end }}
