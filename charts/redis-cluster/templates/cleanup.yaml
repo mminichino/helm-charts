@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: redis-cluster-cleanup
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": post-delete
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      serviceAccountName: redis-enterprise-operator
+      restartPolicy: Never
+      containers:
+        - name: redis-cluster-cleanup
+          image: mminichino/kubectl:latest
+          command: ["/bin/bash"]
+          args:
+            - "-c"
+            - |
+              set -e
+
+              NS="{{ .Release.Namespace }}"
+              REC="{{ .Values.name }}"
+
+              if kubectl get rec "$REC" -n "$NS" 2>/dev/null; then
+                echo "Removing finalizers"
+                kubectl patch rec "$REC" -p '{"metadata":{"finalizers":null}}' --type=merge -n "$NS"
+                echo "Done"
+              fi
+
+              echo "Job completed"
