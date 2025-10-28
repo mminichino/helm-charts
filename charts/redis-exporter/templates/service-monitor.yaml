@@ -19,3 +19,5 @@ spec:
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
+  targetLabels:
+      - tenant

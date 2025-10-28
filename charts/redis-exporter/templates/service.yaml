@@ -6,6 +6,7 @@ metadata:
   labels:
     app: redis-exporter
     component: monitoring
+    tenant: {{ .Release.Namespace }}
   annotations:
     prometheus.io/scrape: "true"
     prometheus.io/port: "9121"
