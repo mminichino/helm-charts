@@ -16,8 +16,9 @@ spec:
       scrapeTimeout: 10s
       path: /metrics
       scheme: http
+      relabelings:
+        - targetLabel: tenant
+          replacement: {{ .Release.Namespace }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
-  targetLabels:
-      - tenant
