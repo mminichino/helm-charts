@@ -390,6 +390,25 @@ entries:
   redis-database:
   - apiVersion: v2
     appVersion: 7.22.0
+    created: "2025-10-28T15:04:35.18340552Z"
+    description: Deploy a REDB resource with the Redis Enterprise Operator
+    digest: 969a9277de00e36bc6e813939d30bdd74e5acd3b8df693d0904884534cff648f
+    home: https://github.com/mminichino/helm-charts
+    keywords:
+    - kubernetes
+    - redis
+    maintainers:
+    - name: Michael Minichino
+      url: https://github.com/mminichino/helm-charts
+    name: redis-database
+    sources:
+    - https://github.com/mminichino/helm-charts
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/redis-database-0.1.4/redis-database-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 7.22.0
     created: "2025-10-07T01:55:47.13328144Z"
     description: Deploy a REDB resource with the Redis Enterprise Operator
     digest: b835e3d6e6329f91f2ebc81d6cb8f686735d1ad06f20331776abfb1c0306601e
@@ -464,6 +483,26 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/redis-database-0.1.0/redis-database-0.1.0.tgz
     version: 0.1.0
+  redis-exporter:
+  - apiVersion: v2
+    appVersion: v1.79.0
+    created: "2025-10-28T15:04:35.432206375Z"
+    description: Deploy the OSS Redis Exporter with the Redis Enterprise Operator
+    digest: f06b3d7feb9fd7394fabd7b73a4b82645a79f577745fece7b4c104cd83f74794
+    home: https://github.com/mminichino/helm-charts
+    keywords:
+    - kubernetes
+    - redis
+    maintainers:
+    - name: Michael Minichino
+      url: https://github.com/mminichino/helm-charts
+    name: redis-exporter
+    sources:
+    - https://github.com/mminichino/helm-charts
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/redis-exporter-0.1.1/redis-exporter-0.1.1.tgz
+    version: 0.1.1
   session-api:
   - apiVersion: v2
     appVersion: 1.0.1
@@ -485,4 +524,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-08T21:42:48.007912353Z"
+generated: "2025-10-28T15:04:35.432303988Z"
