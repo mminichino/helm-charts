@@ -1,5 +1,5 @@
 apiVersion: v2
-name: redis-database
+name: redis-exporter
 description: Deploy the OSS Redis Exporter with the Redis Enterprise Operator
 type: application
 version: 0.1.0
