@@ -6,6 +6,10 @@ metadata:
   labels:
     app: redis
 spec:
+  redisEnterpriseImageSpec:
+    imagePullPolicy: IfNotPresent
+    repository: redislabs/redis
+    versionTag: {{ .Values.version }}
   redisEnterpriseNodeResources:
     limits:
       cpu: {{ .Values.node.cpu | quote }}
