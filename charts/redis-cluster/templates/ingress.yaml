@@ -4,7 +4,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: redis-enterprise-cluster-ui
+  name: "{{ .Values.name }}-ui"
   namespace: {{ .Release.Namespace }}
   {{- if eq .Values.ingress.type "haproxy" }}
   annotations:
@@ -26,7 +26,7 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: redis-enterprise-cluster-ui
+                name: "{{ .Values.name }}-ui"
                 port:
                   number: 8443
 {{- end }}
