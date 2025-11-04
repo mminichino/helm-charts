@@ -577,6 +577,25 @@ entries:
     version: 0.1.0
   redis-database:
   - apiVersion: v2
+    appVersion: 8.0.2
+    created: "2025-11-04T21:57:49.842536996Z"
+    description: Deploy a REDB resource with the Redis Enterprise Operator
+    digest: fa67870163951739a8af263050c904ef9b2e5318f7a0ae84cfadbc8061d1ce99
+    home: https://github.com/mminichino/helm-charts
+    keywords:
+    - kubernetes
+    - redis
+    maintainers:
+    - name: Michael Minichino
+      url: https://github.com/mminichino/helm-charts
+    name: redis-database
+    sources:
+    - https://github.com/mminichino/helm-charts
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/redis-database-0.1.8/redis-database-0.1.8.tgz
+    version: 0.1.8
+  - apiVersion: v2
     appVersion: 7.22.0
     created: "2025-11-04T21:40:21.55347193Z"
     description: Deploy a REDB resource with the Redis Enterprise Operator
@@ -807,4 +826,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-04T21:40:21.553581456Z"
+generated: "2025-11-04T21:57:49.842646731Z"
