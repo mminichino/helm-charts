@@ -47,6 +47,22 @@ entries:
   postgres:
   - apiVersion: v2
     appVersion: "16"
+    created: "2025-11-04T19:45:32.685141745Z"
+    description: A Helm chart for PostgreSQL
+    digest: 75b31ce8d01c14cda8ed5c3fde848b0925c05b8935ba74793024fe8f5d127966
+    keywords:
+    - postgres
+    - postgresql
+    - database
+    maintainers:
+    - name: Michael Minichino
+    name: postgres
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/postgres-1.0.3/postgres-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: "16"
     created: "2025-11-04T19:13:00.79630233Z"
     description: A Helm chart for PostgreSQL
     digest: 108d5209d10ebbac5b86a81a7b579425089766124f8d47bdd8357433af7ebb93
@@ -724,4 +740,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-04T19:13:00.796376619Z"
+generated: "2025-11-04T19:45:32.685209482Z"
