@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: preinstall-job
+  name: "{{ .Values.name }}-preinstall-job"
   namespace: {{ .Values.namespace | default .Release.Namespace }}
   annotations:
     "helm.sh/hook": pre-install
@@ -22,4 +22,6 @@ spec:
             - |
               set -e
 
+              kubectl wait deployment/redis-enterprise-operator --for condition=available --timeout=5m -n {{ .Values.namespace | default .Release.Namespace }}
+              kubectl rollout restart deployment/redis-enterprise-operator -n {{ .Values.namespace | default .Release.Namespace }}
               kubectl wait deployment/redis-enterprise-operator --for condition=available --timeout=5m -n {{ .Values.namespace | default .Release.Namespace }}
