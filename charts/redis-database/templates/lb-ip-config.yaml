@@ -27,6 +27,7 @@ spec:
 
               kubectl wait '--for=jsonpath={.status.loadBalancer.ingress[0].ip}' "service/{{ .Values.name }}-load-balancer" --timeout=10m -n {{ .Release.Namespace }}
               if [ -n "$DOMAIN" ]; then
-                kubectl annotate service "service/{{ .Values.name }}-load-balancer" "external-dns.alpha.kubernetes.io/hostname={{ .Values.name }}.$DOMAIN" -n {{ .Release.Namespace }}
+                echo "Adding hostname to external-dns"
+                kubectl annotate service "{{ .Values.name }}-load-balancer" "external-dns.alpha.kubernetes.io/hostname={{ .Values.name }}.$DOMAIN" -n {{ .Release.Namespace }}
               fi
 {{- end }}
