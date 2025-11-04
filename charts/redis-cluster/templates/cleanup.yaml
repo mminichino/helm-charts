@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: redis-cluster-cleanup
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
   annotations:
     "helm.sh/hook": post-delete
     "helm.sh/hook-weight": "0"
@@ -22,7 +22,7 @@ spec:
             - |
               set -e
 
-              NS="{{ .Release.Namespace }}"
+              NS="{{ .Values.namespace | default .Release.Namespace }}"
               REC="{{ .Values.name }}"
 
               if kubectl get rec "$REC" -n "$NS" 2>/dev/null; then
