@@ -3,7 +3,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: lb-ip-config
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "0"

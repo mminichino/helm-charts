@@ -1,6 +1,7 @@
 #
 
 name: "redb"
+namespace: ""
 password: ""
 cluster: "redis-enterprise-cluster"
 memory: "1GB"

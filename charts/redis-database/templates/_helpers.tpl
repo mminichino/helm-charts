@@ -1,5 +1,5 @@
 {{- define "redis-database.password" -}}
-{{- $secret := lookup "v1" "Secret" .Release.Namespace .Values.name -}}
+{{- $secret := lookup "v1" "Secret" (.Values.namespace | default .Release.Namespace) .Values.name -}}
 {{- $password := "" -}}
 {{- if $secret -}}
 {{- $password = index $secret.data "password" | b64dec -}}
