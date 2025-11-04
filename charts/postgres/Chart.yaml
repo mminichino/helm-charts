@@ -1,0 +1,12 @@
+apiVersion: v2
+name: postgres
+description: A Helm chart for PostgreSQL
+type: application
+version: 1.0.0
+appVersion: "16"
+keywords:
+  - postgres
+  - postgresql
+  - database
+maintainers:
+  - name: Michael Minichino

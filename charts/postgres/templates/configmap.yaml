@@ -1,0 +1,13 @@
+{{- if .Values.postgres.config }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}-config
+  labels:
+    {{ include "postgres.labels" . | nindent 4 }}
+data:
+  custom.conf: |
+    {{- range $key, $value := .Values.postgres.config }}
+    {{ $key }} = '{{ $value }}'
+    {{- end }}
+{{- end }}
