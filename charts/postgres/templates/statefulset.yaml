@@ -30,6 +30,9 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ .Values.name }}
+          env:
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
           ports:
             - name: postgres
               containerPort: 5432
@@ -59,7 +62,6 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /var/lib/postgresql/data
-              subPath: postgres
         {{- if .Values.postgres.config }}
             - name: config
               mountPath: /etc/postgresql/postgresql.conf
