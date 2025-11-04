@@ -5,7 +5,7 @@ metadata:
   name: {{ .Values.name }}
   namespace: {{ .Values.namespace | default .Release.Namespace }}
   labels:
-    {{ include "postgres.labels" . | nindent 4 }}
+    {{- include "postgres.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.clusterIP.type }}
   ports:
@@ -20,5 +20,5 @@ spec:
       name: metrics
   {{- end }}
   selector:
-    {{ include "postgres.selectorLabels" . | nindent 4 }}
+    {{- include "postgres.selectorLabels" . | nindent 4 }}
 {{- end }}

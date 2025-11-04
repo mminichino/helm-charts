@@ -5,7 +5,7 @@ metadata:
   name: {{ .Values.name }}-config
   namespace: {{ .Values.namespace | default .Release.Namespace }}
   labels:
-    {{ include "postgres.labels" . | nindent 4 }}
+    {{- include "postgres.labels" . | nindent 4 }}
 data:
   custom.conf: |
     {{- range $key, $value := .Values.postgres.config }}

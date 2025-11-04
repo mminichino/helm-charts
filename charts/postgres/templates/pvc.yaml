@@ -5,7 +5,7 @@ metadata:
   name: {{ .Values.name }}-data
   namespace: {{ .Values.namespace | default .Release.Namespace }}
   labels:
-    {{ include "postgres.labels" . | nindent 4 }}
+    {{- include "postgres.labels" . | nindent 4 }}
 spec:
   accessModes:
     - {{ .Values.postgres.persistence.accessMode }}

@@ -4,25 +4,25 @@ metadata:
   name: {{ .Values.name }}
   namespace: {{ .Values.namespace | default .Release.Namespace }}
   labels:
-    {{ include "postgres.labels" . | nindent 4 }}
+    {{- include "postgres.labels" . | nindent 4 }}
 spec:
   serviceName: {{ .Values.name }}
   replicas: 1
   selector:
     matchLabels:
-      {{ include "postgres.selectorLabels" . | nindent 6 }}
+      {{- include "postgres.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
         {{- with .Values.podAnnotations }}
-        {{ toYaml . | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        {{ include "postgres.selectorLabels" . | nindent 8 }}
+        {{- include "postgres.selectorLabels" . | nindent 8 }}
     spec:
       securityContext:
-        {{ toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: postgres
           image: "{{ .Values.postgres.image.repository }}:{{ .Values.postgres.image.tag }}"
@@ -55,7 +55,7 @@ spec:
             timeoutSeconds: 3
             failureThreshold: 3
           resources:
-          {{ toYaml .Values.postgres.resources | nindent 10 }}
+          {{- toYaml .Values.postgres.resources | nindent 10 }}
           volumeMounts:
             - name: data
               mountPath: /var/lib/postgresql/data
@@ -92,7 +92,7 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
           resources:
-          {{ toYaml .Values.exporter.resources | nindent 10 }}
+          {{- toYaml .Values.exporter.resources | nindent 10 }}
       {{- end }}
       volumes:
       {{- if .Values.postgres.config }}
@@ -110,13 +110,13 @@ spec:
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
-        {{ toYaml . | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.affinity }}
       affinity:
-        {{ toYaml . | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.tolerations }}
       tolerations:
-        {{ toYaml . | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}

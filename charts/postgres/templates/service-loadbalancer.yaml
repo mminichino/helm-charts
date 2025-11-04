@@ -5,18 +5,18 @@ metadata:
   name: {{ .Values.name }}-lb
   namespace: {{ .Values.namespace | default .Release.Namespace }}
   labels:
-    {{ include "postgres.labels" . | nindent 4 }}
-  {{- with .Values.service.loadBalancer.annotations }}
+    {{- include "postgres.labels" . | nindent 4 }}
+  {{- if .Values.service.loadBalancer.annotations }}
   annotations:
-    {{ toYaml . | nindent 4 }}
+    {{- toYaml .Values.service.loadBalancer.annotations | nindent 4 }}
   {{- end }}
 spec:
   type: LoadBalancer
   ports:
-    - port: {{ .Values.service.loadBalancer.port }}
-      targetPort: postgres
-      protocol: TCP
-      name: postgres
+  - port: {{ .Values.service.loadBalancer.port }}
+    targetPort: postgres
+    protocol: TCP
+    name: postgres
   selector:
-    {{ include "postgres.selectorLabels" . | nindent 4 }}
+    {{- include "postgres.selectorLabels" . | nindent 4 }}
 {{- end }}
