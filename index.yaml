@@ -47,6 +47,25 @@ entries:
   redis-cluster:
   - apiVersion: v2
     appVersion: 8.0.2
+    created: "2025-11-04T15:19:47.068844634Z"
+    description: Deploy a REC resource with the Redis Enterprise Operator
+    digest: 54e5438ab3d30e65688df11af2203ddca0b6841d6b57b2ffc144c324927fa2d3
+    home: https://github.com/mminichino/helm-charts
+    keywords:
+    - kubernetes
+    - redis
+    maintainers:
+    - name: Michael Minichino
+      url: https://github.com/mminichino/helm-charts
+    name: redis-cluster
+    sources:
+    - https://github.com/mminichino/helm-charts
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/redis-cluster-0.1.20/redis-cluster-0.1.20.tgz
+    version: 0.1.20
+  - apiVersion: v2
+    appVersion: 8.0.2
     created: "2025-11-03T21:24:49.251921095Z"
     description: Deploy a REC resource with the Redis Enterprise Operator
     digest: de4f7f0ae693dcb148af7cafa862c44f9f6f5f9dd372f33820c4b0ffa660d514
@@ -428,6 +447,25 @@ entries:
   redis-database:
   - apiVersion: v2
     appVersion: 7.22.0
+    created: "2025-11-04T15:19:47.341135086Z"
+    description: Deploy a REDB resource with the Redis Enterprise Operator
+    digest: 2f6096eace23a640f1b8ba46695331a3259aae28863582c29729158803f3ff78
+    home: https://github.com/mminichino/helm-charts
+    keywords:
+    - kubernetes
+    - redis
+    maintainers:
+    - name: Michael Minichino
+      url: https://github.com/mminichino/helm-charts
+    name: redis-database
+    sources:
+    - https://github.com/mminichino/helm-charts
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/redis-database-0.1.5/redis-database-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 7.22.0
     created: "2025-10-28T15:04:35.18340552Z"
     description: Deploy a REDB resource with the Redis Enterprise Operator
     digest: 969a9277de00e36bc6e813939d30bdd74e5acd3b8df693d0904884534cff648f
@@ -600,4 +638,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-03T21:24:49.252144363Z"
+generated: "2025-11-04T15:19:47.341362192Z"
