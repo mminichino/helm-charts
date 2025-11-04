@@ -1,0 +1,49 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rdi-api
+  labels:
+    app: rdi-api
+    product: rdi
+    {{- with merge (.Values.ingress.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with merge (.Values.ingress.annotations | default dict) (.Values.global.annotations | default dict) }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  rules:
+  {{- if .Values.ingress.hosts }}
+    {{- range $host := .Values.ingress.hosts }}
+    - host: {{ $host }}
+      http:
+        paths:
+          - path: {{ $.Values.ingress.pathPrefix | default "/" }}
+            pathType: Prefix
+            backend:
+              service:
+                name: rdi-api
+                port:
+                  number: {{ $.Values.api.service.port }}
+    {{- end }}
+  {{- else }}
+    - http:
+        paths:
+          - path: {{ .Values.ingress.pathPrefix | default "/" }}
+            pathType: Prefix
+            backend:
+              service:
+                name: rdi-api
+                port:
+                  number: {{ .Values.api.service.port }}
+  {{- end }}
+  {{- if .Values.ingress.tls.enabled }}
+  tls:
+    - secretName: rdi-api-ingress-tls
+  {{- end }}
+{{- end }}

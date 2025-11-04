@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rdi-operator
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    control-plane: operator
+    {{- with .Values.global.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.global.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+data:
+  config.yaml: |-
+    apiVersion: config.rdi.redis.com/v1alpha1
+    kind: OperatorConfiguration
+    legacyMode: {{ .Values.legacyMode }}
+    namespace: {{ .Values.namespace }}
+    {{- with .Values.connection }}
+    connection:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- if .Values.leaderElection.enabled }}
+    leaderElection:
+      {{- $leaseType := .Values.leaderElection.leaseType | default "redsync" -}}
+      {{- if eq $leaseType "redsync" }}
+      {{- if .Values.leaderElection.redsyncLease }}
+      redsyncLease:
+        {{- toYaml .Values.leaderElection.redsyncLease | nindent 8 }}
+      {{- else }}
+      redsyncLease: {}
+      {{- end }}
+      {{- else if eq $leaseType "gcs" }}
+      {{- if not .Values.leaderElection.gcsLease }}
+      {{- fail "gcsLease must be specified when leaseType is gcs" }}
+      {{- end }}
+      gcsLease:
+        {{- if hasKey .Values.leaderElection.gcsLease "credentials" }}
+        credentialFile: /etc/credentials/lease/credentials
+        {{- end }}
+        {{- toYaml (omit .Values.leaderElection.gcsLease "credentials") | nindent 8 }}
+      {{- end }}
+      {{- with .Values.leaderElection.instanceID }}
+      instanceID: {{ . }}
+      {{- end }}
+      {{- with .Values.leaderElection.standbyMode }}
+      standbyMode: {{ . }}
+      {{- end }}
+      {{- with .Values.leaderElection.ttl }}
+      ttl: {{ . }}
+      {{- end }}
+      {{- with .Values.leaderElection.refreshInterval }}
+      refreshInterval: {{ . }}
+      {{- end }}
+      {{- with .Values.leaderElection.timeout }}
+      timeout: {{ . }}
+      {{- end }}
+      {{- with .Values.leaderElection.retryPolicy }}
+      retryPolicy:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.leaderElection.checkTimeout }}
+      checkTimeout: {{ . }}
+      {{- end }}
+      {{- with .Values.leaderElection.checkRetryPolicy }}
+      checkRetryPolicy:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- end }}
+    values:
+      {{- with .Values.global }}
+      global:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.dataPlane }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}

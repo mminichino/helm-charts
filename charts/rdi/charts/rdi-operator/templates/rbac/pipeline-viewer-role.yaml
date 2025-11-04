@@ -1,0 +1,36 @@
+{{- if .Values.rbac.enabled }}
+# This rule is not used by the project rdi-operator itself.
+# It is provided to allow the cluster admin to help manage permissions for users.
+#
+# Grants read-only access to rdi.redis.com resources.
+# This role is intended for users who need visibility into these resources
+# without permissions to modify them. It is ideal for monitoring purposes and limited-access viewing.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: rdi-pipeline-viewer
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    {{- with merge (.Values.rbac.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with merge (.Values.rbac.annotations | default dict) (.Values.global.annotations | default dict) }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+rules:
+- apiGroups:
+  - rdi.redis.com
+  resources:
+  - pipelines
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - rdi.redis.com
+  resources:
+  - pipelines/status
+  verbs:
+  - get
+{{- end -}}

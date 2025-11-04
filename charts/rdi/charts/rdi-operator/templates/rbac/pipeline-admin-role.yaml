@@ -1,0 +1,33 @@
+{{- if .Values.rbac.enabled }}
+# This rule is not used by the project rdi-operator itself.
+# It is provided to allow the cluster admin to help manage permissions for users.
+# Grants full permissions ('*') over rdi.redis.com.
+# This role is intended for users authorized to modify roles and bindings within the cluster,
+# enabling them to delegate specific permissions to other users or groups as needed.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: rdi-pipeline-admin
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    {{- with merge (.Values.rbac.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with merge (.Values.rbac.annotations | default dict) (.Values.global.annotations | default dict) }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+rules:
+- apiGroups:
+  - rdi.redis.com
+  resources:
+  - pipelines
+  verbs:
+  - '*'
+- apiGroups:
+  - rdi.redis.com
+  resources:
+  - pipelines/status
+  verbs:
+  - get
+{{- end -}}

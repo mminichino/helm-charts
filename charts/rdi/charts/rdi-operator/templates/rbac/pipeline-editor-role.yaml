@@ -1,0 +1,39 @@
+{{- if .Values.rbac.enabled }}
+# This rule is not used by the project rdi-operator itself.
+# It is provided to allow the cluster admin to help manage permissions for users.
+# Grants permissions to create, update, and delete resources within the rdi.redis.com.
+# This role is intended for users who need to manage these resources
+# but should not control RBAC or manage permissions for others.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: rdi-pipeline-editor
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    {{- with merge (.Values.rbac.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with merge (.Values.rbac.annotations | default dict) (.Values.global.annotations | default dict) }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+rules:
+- apiGroups:
+  - rdi.redis.com
+  resources:
+  - pipelines
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - rdi.redis.com
+  resources:
+  - pipelines/status
+  verbs:
+  - get
+{{- end -}}

@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rdi-metrics-exporter
+  labels:
+    app: rdi-metrics-exporter
+    product: rdi
+    {{- with merge (.Values.rdiMetricsExporter.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with merge (.Values.rdiMetricsExporter.annotations | default dict) (.Values.global.annotations | default dict) }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.rdiMetricsExporter.replicas }}
+  revisionHistoryLimit: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: rdi-metrics-exporter
+      product: rdi
+  template:
+    metadata:
+      labels:
+        app: rdi-metrics-exporter
+        product: rdi
+        {{- with merge (.Values.rdiMetricsExporter.labels | default dict) (.Values.global.labels | default dict) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        configmap.reloader.stakater.com/reload: rdi-sys-config
+        {{- if not .Values.global.externalSecrets.enabled }}
+        secret.reloader.stakater.com/reload: rdi-sys-config, rdi-db-ssl
+        {{- else }}
+        {{- end }}
+        {{- with merge (.Values.rdiMetricsExporter.annotations | default dict) (.Values.global.annotations | default dict) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: rdi-metrics-exporter
+      terminationGracePeriodSeconds: 60
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: rdi-metrics-exporter
+          {{- include "rdi.securityContext" . | nindent 10 }}
+          image: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}/{{ .Values.rdiMetricsExporter.image.name }}:{{ or .Values.rdiMetricsExporter.image.tag .Values.global.image.tag }}"
+          imagePullPolicy: {{ .Values.rdiMetricsExporter.image.pullPolicy }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 9121
+            periodSeconds: {{ .Values.rdiMetricsExporter.liveness.periodSeconds }}
+            failureThreshold: {{ .Values.rdiMetricsExporter.liveness.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9121
+            periodSeconds: {{ .Values.rdiMetricsExporter.readiness.periodSeconds }}
+            failureThreshold: {{ .Values.rdiMetricsExporter.readiness.failureThreshold }}
+          startupProbe:
+            httpGet:
+              path: /
+              port: 9121
+            periodSeconds: {{ .Values.rdiMetricsExporter.startup.periodSeconds }}
+            failureThreshold: {{ .Values.rdiMetricsExporter.startup.failureThreshold }}
+          volumeMounts:
+            {{- if .Values.global.externalSecrets.enabled }}
+            - name: rdi-credentials
+              mountPath: /mnt/secrets/rdi-credentials
+              readOnly: true
+            {{- else }}
+            - name: rdi-db-certificates
+              mountPath: /etc/certificates/rdi_db
+              readOnly: true
+            {{- end }}
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: RDI_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          envFrom:
+            - configMapRef:
+                name: rdi-sys-config
+            {{- if not .Values.global.externalSecrets.enabled }}
+            - secretRef:
+                name: rdi-sys-config
+            {{- end }}
+      volumes:
+        {{- if .Values.global.externalSecrets.enabled }}
+        - name: rdi-credentials
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: rdi-credentials
+        {{- else }}
+        - name: rdi-db-certificates
+          secret:
+            secretName: rdi-db-ssl
+            optional: true
+        {{- end }}

@@ -1,0 +1,81 @@
+{{- if .Values.webhooks.enabled }}
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: rdi-operator
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    {{- with .Values.global.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- if or .Values.certmanager.enabled .Values.global.annotations }}
+  annotations:
+    {{- if .Values.certmanager.enabled }}
+    cert-manager.io/inject-ca-from: "{{ $.Release.Namespace }}/rdi-operator-webhooks"
+    {{- end }}
+    {{- with .Values.global.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+webhooks:
+  - name: mpipeline-v1alpha1.kb.io
+    clientConfig:
+      service:
+        name: rdi-operator-webhooks
+        namespace: {{ .Release.Namespace }}
+        path: /mutate-rdi-redis-com-v1alpha1-pipeline
+    failurePolicy: Fail
+    sideEffects: None
+    admissionReviewVersions:
+      - v1
+    rules:
+      - operations:
+          - CREATE
+          - UPDATE
+        apiGroups:
+          - rdi.redis.com
+        apiVersions:
+          - v1alpha1
+        resources:
+          - pipelines
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: rdi-operator
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    {{- with .Values.global.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- if or .Values.certmanager.enabled .Values.global.annotations }}
+  annotations:
+    {{- if .Values.certmanager.enabled }}
+    cert-manager.io/inject-ca-from: "{{ $.Release.Namespace }}/rdi-operator-webhooks"
+    {{- end }}
+    {{- with .Values.global.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+webhooks:
+  - name: vpipeline-v1alpha1.kb.io
+    clientConfig:
+      service:
+        name: rdi-operator-webhooks
+        namespace: {{ .Release.Namespace }}
+        path: /validate-rdi-redis-com-v1alpha1-pipeline
+    failurePolicy: Fail
+    sideEffects: None
+    admissionReviewVersions:
+      - v1
+    rules:
+      - operations:
+          - CREATE
+          - UPDATE
+        apiGroups:
+          - rdi.redis.com
+        apiVersions:
+          - v1alpha1
+        resources:
+          - pipelines
+{{- end }}

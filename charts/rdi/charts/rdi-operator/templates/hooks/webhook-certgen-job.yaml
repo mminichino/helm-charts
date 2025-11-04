@@ -1,0 +1,75 @@
+{{- if and .Values.webhooks.enabled (not .Values.certmanager.enabled) .Values.certJobs.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rdi-operator-webhook-certgen
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+    helm.sh/hook-weight: "1"
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    job: rdi-operator-webhook-certgen
+    {{- with merge (.Values.certJobs.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with merge (.Values.certJobs.annotations | default dict) (.Values.global.annotations | default dict) }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  backoffLimit: {{ .Values.certJobs.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.certJobs.activeDeadlineSeconds }}
+  template:
+    metadata:
+      name: rdi-operator-webhook-certgen
+      labels:
+        {{- include "chart.labels" . | nindent 8 }}
+        job: rdi-operator-webhook-certgen
+        {{- with merge (.Values.certJobs.labels | default dict) (.Values.global.labels | default dict) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with merge (.Values.certJobs.annotations | default dict) (.Values.global.annotations | default dict) }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      containers:
+        - name: kube-webhook-certgen
+          image: {{ .Values.certJobs.image.registry }}/{{ .Values.certJobs.image.repository }}:{{ .Values.certJobs.image.tag }}
+          imagePullPolicy: {{ .Values.certJobs.image.pullPolicy | default "IfNotPresent" }}
+          args:
+            - create
+            - --host=rdi-operator-webhooks,rdi-operator-webhooks.{{ .Release.Namespace }}.svc
+            - --namespace={{ .Release.Namespace }}
+            - --secret-name=rdi-operator-webhooks-cert
+            - --cert-name=tls.crt
+            - --key-name=tls.key
+          {{- if .Values.certJobs.resources }}
+          resources:
+            {{- toYaml .Values.certJobs.resources | nindent 12 }}
+          {{- end }}
+          {{- if .Values.global.securityContext }}
+          securityContext:
+            {{- toYaml .Values.global.securityContext | nindent 12 }}
+          {{- else }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            privileged: false
+            capabilities:
+              drop:
+                - ALL
+          {{- end }}
+      serviceAccountName: rdi-operator-jobs
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: OnFailure
+{{- end -}}

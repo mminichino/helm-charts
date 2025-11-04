@@ -1,0 +1,235 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rdi-operator
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    control-plane: operator
+    {{- with merge (.Values.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with merge (.Values.annotations | default dict) (.Values.global.annotations | default dict) }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.replicas }}
+  revisionHistoryLimit: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      {{- include "chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "chart.labels" . | nindent 8 }}
+        control-plane: operator
+        {{- with merge (.Values.labels | default dict) (.Values.global.labels | default dict) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        kubectl.kubernetes.io/default-container: manager
+        configmap.reloader.stakater.com/reload: rdi-operator, rdi-sys-config
+        {{- if not .Values.global.externalSecrets.enabled }}
+        secret.reloader.stakater.com/reload: rdi-sys-config, rdi-db-ssl
+        {{- end }}
+        {{- with merge (.Values.annotations | default dict) (.Values.global.annotations | default dict) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      containers:
+        - name: manager
+          {{- $imageRepository := default (printf "%s/%s" .Values.global.image.registry .Values.global.image.repository) .Values.image.repository -}}
+          {{- $imageTag := default .Values.global.image.tag .Values.image.tag }}
+          image: {{ $imageRepository }}/{{ .Values.image.name }}:{{ $imageTag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+          args:
+            - /manager
+            {{- $metricsPort := .Values.metrics.secure | ternary 8443 8080 -}}
+            {{- if .Values.metrics.enabled }}
+            - --metrics-secure={{ .Values.metrics.secure }}
+            - --metrics-bind-address=:{{ $metricsPort }}
+            {{- end }}
+            {{- if not .Values.leaderElection.enabled }}
+            - --leader-elect
+            {{- end }}
+            - --health-probe-bind-address=:8081
+            - --config-file=config/config.yaml
+            {{- if not .Values.webhooks.enabled }}
+            - --enable-webhooks=false
+            {{- end }}
+            {{- if and .Values.metrics.enabled .Values.metrics.secure .Values.certmanager.enabled .Values.metrics.certs }}
+            - --metrics-cert-path=/tmp/k8s-metrics-server/metrics-certs
+            {{- end }}
+            {{- if and .Values.webhooks.enabled (or .Values.certmanager.enabled .Values.certJobs.enabled) }}
+            - --webhook-cert-path=/tmp/k8s-webhook-server/serving-certs
+            {{- end }}
+            {{- range .Values.args }}
+            - {{ . }}
+            {{- end }}
+            {{- $logLevel := upper (default .Values.global.logLevel .Values.logLevel) -}}
+            {{- $logLevel = eq $logLevel "TRACE" | ternary "2" $logLevel -}}
+            {{- $logLevel = has $logLevel (list "WARNING" "CRITICAL") | ternary "ERROR" $logLevel -}}
+            {{- if ne $logLevel "INFO" }}
+            - --zap-log-level={{ $logLevel }}
+            {{- end }}
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: RDI_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          envFrom:
+            - configMapRef:
+                name: rdi-sys-config
+                optional: true
+            {{- if not .Values.global.externalSecrets.enabled }}
+            - secretRef:
+                name: rdi-sys-config
+                optional: true
+            {{- end }}
+          {{- if or .Values.metrics.enabled .Values.webhooks.enabled }}
+          ports:
+            {{- if .Values.metrics.enabled }}
+            - name: metrics-server
+              protocol: TCP
+              containerPort: {{ $metricsPort }}
+            {{- end }}
+            {{- if .Values.webhooks.enabled }}
+            - name: webhook-server
+              protocol: TCP
+              containerPort: 9443
+            {{- end }}
+          {{- end }}
+          {{- if .Values.resources }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            {{- if .Values.liveness.failureThreshold }}
+            failureThreshold: {{ .Values.liveness.failureThreshold }}
+            {{- end }}
+            periodSeconds: {{ .Values.liveness.periodSeconds }}
+            initialDelaySeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8081
+            {{- if .Values.readiness.failureThreshold }}
+            failureThreshold: {{ .Values.readiness.failureThreshold }}
+            {{- end }}
+            periodSeconds: {{ .Values.readiness.periodSeconds }}
+            initialDelaySeconds: 5
+          {{- if .Values.startup }}
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            {{ if .Values.startup.failureThreshold }}
+            failureThreshold: {{ .Values.startup.failureThreshold }}
+            {{- end }}
+            periodSeconds: {{ .Values.startup.periodSeconds }}
+          {{- end }}
+          {{- if .Values.global.securityContext }}
+          securityContext:
+            {{- toYaml .Values.global.securityContext | nindent 12 }}
+          {{- else }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - "ALL"
+          {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
+            {{- if .Values.global.externalSecrets.enabled }}
+            - name: rdi-credentials
+              mountPath: /mnt/secrets/rdi-credentials
+              readOnly: true
+            {{- else }}
+            - name: rdi-db-certificates
+              mountPath: /etc/certificates/rdi_db
+              readOnly: true
+            {{- end }}
+            {{- if and .Values.leaderElection.enabled (eq .Values.leaderElection.leaseType "gcs") (hasKey (dig "gcsLease" dict .Values.leaderElection) "credentials") }}
+            - name: rdi-lease-credentials
+              mountPath: /etc/credentials/lease
+              readOnly: true
+            {{- end }}
+            {{- if and .Values.metrics.enabled .Values.metrics.secure .Values.certmanager.enabled .Values.metrics.certs }}
+            - name: metrics-certs
+              mountPath: /tmp/k8s-metrics-server/metrics-certs
+              readOnly: true
+            {{- end }}
+            {{- if and .Values.webhooks.enabled (or .Values.certmanager.enabled .Values.certJobs.enabled) }}
+            - name: webhook-certs
+              mountPath: /tmp/k8s-webhook-server/serving-certs
+              readOnly: true
+            {{- end }}
+      serviceAccountName: rdi-operator
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      terminationGracePeriodSeconds: 10
+      volumes:
+        - name: config
+          configMap:
+            name: rdi-operator
+            defaultMode: 420
+        {{- if .Values.global.externalSecrets.enabled }}
+        - name: rdi-credentials
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: rdi-credentials
+        {{- else }}
+        - name: rdi-db-certificates
+          secret:
+            secretName: rdi-db-ssl
+            optional: true
+        {{- end }}
+        {{- if and .Values.leaderElection.enabled (eq .Values.leaderElection.leaseType "gcs") (hasKey (dig "gcsLease" dict .Values.leaderElection) "credentials") }}
+        - name: rdi-lease-credentials
+          secret:
+            secretName: rdi-lease-credentials
+            optional: true
+        {{- end }}
+        {{- if and .Values.metrics.enabled .Values.metrics.secure .Values.certmanager.enabled .Values.metrics.certs }}
+        - name: metrics-certs
+          secret:
+            secretName: rdi-operator-metrics-cert
+            optional: false
+            items:
+              - key: ca.crt
+                path: ca.crt
+              - key: tls.crt
+                path: tls.crt
+              - key: tls.key
+                path: tls.key
+        {{- end }}
+        {{- if and .Values.webhooks.enabled (or .Values.certmanager.enabled .Values.certJobs.enabled) }}
+        - name: webhook-certs
+          secret:
+            secretName: rdi-operator-webhooks-cert
+        {{- end }}

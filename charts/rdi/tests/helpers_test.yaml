@@ -1,0 +1,25 @@
+suite: Helpers test
+templates:
+  - rdi-sys-config-secret.yaml
+tests:
+  - it: should return correct certificate path
+    asserts:
+      - isKind:
+          of: Secret
+      - equal:
+          path: data.RDI_REDIS_CERT
+          value: L2V0Yy9jZXJ0aWZpY2F0ZXMvcmRpX2RiL2NlcnQ=
+  - it: should return correct key path
+    asserts:
+      - isKind:
+          of: Secret
+      - equal:
+          path: data.RDI_REDIS_KEY
+          value: L2V0Yy9jZXJ0aWZpY2F0ZXMvcmRpX2RiL2tleQ==
+  - it: should return correct CA certificate path
+    asserts:
+      - isKind:
+          of: Secret
+      - equal:
+          path: data.RDI_REDIS_CACERT
+          value: L2V0Yy9jZXJ0aWZpY2F0ZXMvcmRpX2RiL2NhY2VydA==

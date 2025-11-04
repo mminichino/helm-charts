@@ -1,0 +1,332 @@
+global:
+  # Global RDI log level, one of TRACE, DEBUG, INFO, WARNING, ERROR, or CRITICAL
+  # Converted to zap log level, one of 2, DEBUG, INFO, ERROR
+  logLevel: INFO
+
+  # Global RDI image parameters.
+  image:
+    registry: docker.io
+    repository: redis
+    tag: 0.0.0
+
+  # imagePullSecrets:
+  #   - name: regcred
+
+  # Default RDI security context
+  # securityContext:
+  #   runAsNonRoot: true
+  #   runAsUser: 1000
+  #   runAsGroup: 1000
+  #   allowPrivilegeEscalation: false
+
+  # Additional global labels and annotations
+  # labels: {}
+  # annotations: {}
+
+  externalSecrets:
+    enabled: false
+    # provider: vault
+    # parameters: {}
+
+# Specifies whether legacy mode is active
+legacyMode: true
+
+# Namespace that contains the default Pipeline resource
+namespace: ${RDI_NAMESPACE}
+
+connection:
+  host: ${RDI_REDIS_HOST}
+  port: ${RDI_REDIS_PORT}
+
+  # Username and password for RDI database.
+  username: ${RDI_REDIS_USERNAME}
+  password: ${RDI_REDIS_PASSWORD}
+
+  # CA certificate PEM file path (required for both TLS and mTLS).
+  caCertFile: ${RDI_REDIS_CACERT}
+
+  # Certificate PEM file path (required only for mTLS).
+  certFile: ${RDI_REDIS_CERT}
+
+  # Private key PEM file path (required only for mTLS).
+  keyFile: ${RDI_REDIS_KEY}
+
+  # Passphrase for decrypting the private key, if the key is encrypted.
+  keyPassword: ${RDI_REDIS_KEY_PASSPHRASE}
+
+# Leader election configuration
+leaderElection:
+  enabled: false
+  # leaseType: redsync
+  # redsyncLease: 
+  #   keyName: rdi:ha:lock
+
+  # leaseType: gcs
+  # gcsLease:
+  #   credentials: |-
+  #     {"type": "service_account", ... }
+  #   bucketName: rdi-lease-bucket
+  #   objectName: rdi-lease-object
+
+  # instanceID: cluster-1
+  # standbyMode: false
+  # ttl: 60s
+  # refreshInterval: 10s
+  # timeout: 30s
+  # retryPolicy:
+  #   attempts: 3
+  #   initialInterval: 1s
+  #   backoffFactor: 2.0
+  # checkTimeout: 15s
+  # checkRetryPolicy:
+  #   attempts: 3
+  #   initialInterval: 1s
+  #   backoffFactor: 2.0
+
+# Log level, one of TRACE, DEBUG, INFO, WARNING, ERROR, or CRITICAL
+# Converted to zap log level, one of 2, DEBUG, INFO, ERROR
+# logLevel: INFO
+
+# Number of replicas
+replicas: 1
+
+# Additional pod labels and annotations
+# labels:
+#   foo: bar
+# annotations:
+#   foo: bar
+
+# Image parameters
+image:
+  name: rdi-operator
+  pullPolicy: IfNotPresent
+
+# Additional command line args and env variables
+# args:
+#   - "--webhook-server-port=9444"
+# env:
+#   ENABLE_WEBHOOKS: "false"
+
+# Container resources
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 10m
+    memory: 64Mi
+
+# Container liveness, readiness, and startup probe parameters
+liveness:
+  # failureThreshold: 3
+  periodSeconds: 20
+readiness:
+  # failureThreshold: 3
+  periodSeconds: 10
+# startup:
+#   failureThreshold: 24
+#   periodSeconds: 5
+
+# Parameters for data plane components
+dataPlane:
+  # Collector parameters
+  collector:
+    replicas: 1
+    image:
+      registry: "quay.io"
+      repository: "debezium/server"
+      tag: "3.0.8.Final"
+      pullPolicy: IfNotPresent
+    initializer:
+      image:
+        name: rdi-collector-initializer
+        pullPolicy: IfNotPresent
+    # labels: {}
+    # annotations: {}
+    # resources: {}
+    # service:
+    #   type: ClusterIP
+    #   port: 9092
+    #   labels: {}
+    #   annotations: {}
+    # serviceMonitor:
+    #   enabled: false
+    #   labels: {}
+    #   annotations: {}
+    # serviceAccount:
+    #   enabled: true
+    #   labels: {}
+    #   annotations: {}
+    # ingress:
+    #   enabled: false
+    #   pathPrefix: "/metrics"
+    #   className: alb
+    #   labels: {}
+    #   annotations: {}
+
+  # Collector API parameters
+  collectorApi:
+    enabled: true
+    replicas: 1
+    image:
+      name: rdi-collector-api
+      pullPolicy: IfNotPresent
+    # labels: {}
+    # annotations: {}
+    # resources: {}
+    # service:
+    #   type: ClusterIP
+    #   port: 8089
+    #   labels: {}
+    #   annotations: {}
+
+  # Processor parameters
+  processor:
+    # Processor log level, one of TRACE, DEBUG, INFO, WARNING, ERROR, or CRITICAL
+    # logLevel: INFO
+    replicas: 1
+    image:
+      name: rdi-processor
+      pullPolicy: IfNotPresent
+    # labels: {}
+    # annotations: {}
+    # resources: {}
+
+  jobs:
+    # Jobs log level, one of TRACE, DEBUG, INFO, WARNING, ERROR, or CRITICAL
+    # logLevel: INFO
+    image:
+      name: rdi-monitor
+      pullPolicy: IfNotPresent
+    backoffLimit: 3
+    activeDeadlineSeconds: 90
+    restartPolicy: Never
+    # labels: {}
+    # annotations: {}
+    # resources: {}
+
+# ServiceAccount resources configuration
+serviceAccount:
+  # Set to true to enable the creation of ServiceAccount resources
+  enabled: true
+
+  # Additional ServiceAccount resources labels and annotations
+  # labels: {}
+  # annotations: {}
+
+# RBAC resources (Role, RoleBinding, ClusterRole, ClusterRoleBinding) configuration
+rbac:
+  # Set to true to enable the creation of RBAC resources
+  enabled: true
+
+  # Additional RBAC resources labels and annotations
+  # labels: {}
+  # annotations: {}
+
+# CRD resources configuration
+crd:
+  # Set to true to enable the creation of CRD resources
+  enabled: true
+
+  # Enabling this option adds the "helm.sh/resource-policy": keep
+  # annotation to the CRDs, ensuring they remain installed even when
+  # the Helm release is uninstalled.
+  # NOTE: Removing the CRDs will also remove all cert-manager CR(s)
+  # (Certificates, Issuers, ...) due to garbage collection.
+  keep: false
+
+  # Additional CRD resources labels and annotations
+  # labels: {}
+  # annotations: {}
+
+# Metrics configuration
+metrics:
+  # Set to true to enable the metrics and their associated resources
+  enabled: true
+  # Set to true to enable secure metrics
+  secure: false
+  # Set to true to protect the metrics endpoint with TLS certificates
+  certs: false
+
+  # Additional metrics service labels and annotations
+  # labels: {}
+  # annotations: {}
+
+# Webhooks configuration
+webhooks:
+  # Set to true to enable the webhooks and their associated resources
+  # If webhooks are enabled, either certJobs or certmanager must be enabled, but not both
+  enabled: false
+
+  # Additional webhook service labels and annotations
+  # labels: {}
+  # annotations: {}
+
+# Prometheus resources configuration
+prometheus:
+  # Set to true to enable the creation of Prometheus resources
+  enabled: false
+  # Set to true if the metrics endpoint is protected with TLS certificates
+  certs: false
+
+  # Additional Prometheus resources labels and annotations
+  # labels: {}
+  # annotations: {}
+
+ingress:
+  # Set to true to enable the metrics ingress
+  enabled: false
+
+  # Ingress class name for the metrics ingress
+  # className: "alb"
+
+  # Hosts for the metrics ingress
+  # hosts:
+  #   - example.com
+
+  # Path prefix for the metrics ingress
+  pathPrefix: "/operator"
+
+  # Additional metrics ingress labels and annotations
+  # labels: {}
+  # annotations: {}
+
+# cert-manager resources configuration
+certmanager:
+  # Set to true to enable the certificate management by cert-manager
+  # If enabled, certificate management jobs must be disabled
+  enabled: false
+
+  # Additional cert-manager resources labels and annotations
+  # labels: {}
+  # annotations: {}
+
+# Certificate management jobs configuration
+certJobs:
+  # Set to true to enable the certificate management jobs
+  # If enabled, cert-manager must be disabled
+  enabled: false
+
+  # Image parameters for the certificate management jobs
+  image:
+    registry: registry.k8s.io
+    repository: ingress-nginx/kube-webhook-certgen
+    tag: "v20221220-controller-v1.5.1-58-g787ea74b6"
+    pullPolicy: IfNotPresent
+
+  # Certificate management jobs parameters
+  backoffLimit: 3
+  activeDeadlineSeconds: 90
+
+  # Additional certificate management jobs labels and annotations
+  # labels: {}
+  # annotations: {}
+
+# NetworkPolicy resources configuration
+networkPolicy:
+  # Set to true to enable the creation of NetworkPolicy resources
+  enabled: false
+
+  # Additional NetworkPolicy resources labels and annotations
+  # labels: {}
+  # annotations: {}

@@ -1,0 +1,83 @@
+{{- if .Values.certmanager.enabled }}
+# Self-signed Issuer
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: rdi-operator
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    {{- with merge (.Values.certmanager.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with merge (.Values.certmanager.annotations | default dict) (.Values.global.annotations | default dict) }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  selfSigned: {}
+{{- if and .Values.metrics.enabled .Values.metrics.secure .Values.metrics.certs }}
+---
+# Certificate for the metrics
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: rdi-operator-metrics
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    {{- with merge (.Values.certmanager.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- $customAnnotations := merge (.Values.certmanager.annotations | default dict) (.Values.global.annotations | default dict) -}}
+  {{- if or .Values.crd.keep $customAnnotations }}
+  annotations:
+    {{- if .Values.crd.keep }}
+    "helm.sh/resource-policy": keep
+    {{- end }}
+    {{- with $customAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  dnsNames:
+    - rdi-operator-metrics.{{ .Release.Namespace }}.svc
+    - rdi-operator-metrics.{{ .Release.Namespace }}.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: rdi-operator
+  secretName: rdi-operator-metrics-cert
+{{- end }}
+{{- if .Values.webhooks.enabled }}
+---
+# Certificate for the webhook
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: rdi-operator-webhooks
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    {{- with merge (.Values.certmanager.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- $customAnnotations := merge (.Values.certmanager.annotations | default dict) (.Values.global.annotations | default dict) -}}
+  {{- if or .Values.crd.keep $customAnnotations }}
+  annotations:
+    {{- if .Values.crd.keep }}
+    "helm.sh/resource-policy": keep
+    {{- end }}
+    {{- with $customAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  dnsNames:
+    - rdi-operator-webhooks.{{ .Release.Namespace }}.svc
+    - rdi-operator-webhooks.{{ .Release.Namespace }}.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: rdi-operator
+  secretName: rdi-operator-webhooks-cert
+{{- end }}
+{{- end }}

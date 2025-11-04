@@ -1,0 +1,5 @@
+checks:
+  addAllBuiltIn: true
+  exclude:
+    - "access-to-create-pods"
+    - "access-to-secrets"

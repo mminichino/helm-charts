@@ -1,0 +1,49 @@
+{{- if not .Values.global.vmMode }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rdi-sys-config
+  labels:
+    product: rdi
+    {{- with .Values.global.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.global.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+data:
+  # RDI Redis database connection configuration
+  RDI_REDIS_HOST: {{ required "connection.host is a required value" .Values.connection.host | quote }}
+  RDI_REDIS_PORT: {{ required "connection.port is a required value" .Values.connection.port | quote }}
+
+  # RDI Redis database connection SSL configuration
+  {{- if .Values.connection.ssl.enabled }}
+  RDI_REDIS_SSL: "true"
+  {{- else }}
+  RDI_REDIS_SSL: "false"
+  {{- end }}
+
+  # Log level configuration
+  RDI_LOG_LEVEL: {{ .Values.global.logLevel | default "INFO" | quote }}
+  RDI_LOG_LEVEL_API: {{ .Values.api.logLevel | default .Values.global.logLevel | default "INFO" | quote }}
+
+  # Collector API configuration
+  {{- if (hasKey .Values.operator.dataPlane "collectorApi") }}
+  {{- if (hasKey .Values.operator.dataPlane.collectorApi "enabled") }}
+  RDI_COLLECTOR_API_ENABLED: {{ .Values.operator.dataPlane.collectorApi.enabled | ternary "1" "0" | quote }}
+  {{- end }}
+  {{- end }}
+
+  # API configuration
+  {{- if (hasKey .Values.api "debugMode") }}
+  RDI_API_DEBUG_MODE: {{ .Values.api.debugMode | ternary "1" "0" | quote }}
+  {{- end }}
+  {{- if (hasKey .Values.api "authEnabled") }}
+  RDI_API_AUTH_ENABLED: {{ .Values.api.authEnabled | ternary "1" "0" | quote }}
+  {{- end }}
+
+  {{- if (hasKey .Values.api "collectorApiTimeout") }}
+  RDI_COLLECTOR_API_TIMEOUT: {{ .Values.api.collectorApiTimeout | quote }}
+  {{- end }}
+{{- end }}

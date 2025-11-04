@@ -1,0 +1,25 @@
+{{- if .Values.metrics.enabled }}
+{{- $metricsPort := .Values.metrics.secure | ternary 8443 8080 -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: rdi-operator-metrics
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    control-plane: operator
+    {{- with merge (.Values.metrics.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with merge (.Values.metrics.annotations | default dict) (.Values.global.annotations | default dict) }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  ports:
+    - name: metrics
+      protocol: TCP
+      port: {{ $metricsPort }}
+  selector:
+    {{- include "chart.selectorLabels" . | nindent 4 }}
+{{- end }}

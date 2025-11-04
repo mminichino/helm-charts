@@ -1,0 +1,123 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rdi-api
+  labels:
+    app: rdi-api
+    product: rdi
+    {{- with merge (.Values.api.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with merge (.Values.api.annotations | default dict) (.Values.global.annotations | default dict) }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.api.replicas }}
+  revisionHistoryLimit: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: rdi-api
+      product: rdi
+  template:
+    metadata:
+      labels:
+        app: rdi-api
+        product: rdi
+        {{- with merge (.Values.api.labels | default dict) (.Values.global.labels | default dict) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        configmap.reloader.stakater.com/reload: rdi-sys-config
+        {{- if not .Values.global.externalSecrets.enabled }}
+        secret.reloader.stakater.com/reload: rdi-sys-config, rdi-db-ssl, target-db, target-db-ssl
+        {{- else }}
+        secret.reloader.stakater.com/reload: target-db, target-db-ssl
+        {{- end }}
+        {{- with merge (.Values.api.annotations | default dict) (.Values.global.annotations | default dict) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: rdi-api
+      terminationGracePeriodSeconds: 60
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: rdi-api
+          {{- include "rdi.securityContext" . | nindent 10 }}
+          image: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}/{{ .Values.api.image.name }}:{{ or .Values.api.image.tag .Values.global.image.tag }}"
+          imagePullPolicy: {{ .Values.api.image.pullPolicy }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port:  {{ .Values.api.service.targetPort }}
+            periodSeconds: {{ .Values.api.liveness.periodSeconds }}
+            failureThreshold: {{ .Values.api.liveness.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port:  {{ .Values.api.service.targetPort }}
+            periodSeconds: {{ .Values.api.readiness.periodSeconds }}
+            failureThreshold: {{ .Values.api.readiness.failureThreshold }}
+          startupProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.api.service.targetPort }}
+            periodSeconds: {{ .Values.api.startup.periodSeconds }}
+            failureThreshold: {{ .Values.api.startup.failureThreshold }}
+          volumeMounts:
+            {{- if .Values.global.externalSecrets.enabled }}
+            - name: rdi-credentials
+              mountPath: /mnt/secrets/rdi-credentials
+              readOnly: true
+            {{- else }}
+            - name: rdi-db-certificates
+              mountPath: /etc/certificates/rdi_db
+              readOnly: true
+            {{- end }}
+            - name: target-db-certificates
+              mountPath: /etc/certificates/target_db
+              readOnly: true
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: RDI_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: RDI_API_SERVER_PORT
+              value: "{{ .Values.api.service.targetPort }}"
+          envFrom:
+            - configMapRef:
+                name: rdi-sys-config
+            {{- if not .Values.global.externalSecrets.enabled }}
+            - secretRef:
+                name: rdi-sys-config
+            {{- end }}
+            - secretRef:
+                name: target-db
+                optional: true
+      volumes:
+        {{- if .Values.global.externalSecrets.enabled }}
+        - name: rdi-credentials
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: rdi-credentials
+        {{- else }}
+        - name: rdi-db-certificates
+          secret:
+            secretName: rdi-db-ssl
+            optional: true
+        {{- end }}
+        - name: target-db-certificates
+          secret:
+            secretName: target-db-ssl
+            optional: true

@@ -1,0 +1,52 @@
+global:
+  vmMode: true
+
+  externalSecrets:
+    enabled: true
+    provider: vault
+    parameters:
+      vaultAddress: http://vault:8200
+      roleName: rdi
+      objects: |
+        - objectName: username
+          secretPath: secret/data/rdi-credentials
+          secretKey: username
+        - objectName: password
+          secretPath: secret/data/rdi-credentials
+          secretKey: password
+
+operator:
+  leaderElection:
+    enabled: true
+    instanceID: ${RDI_CLUSTER_ID}
+    retryPolicy:
+      attempts: 5
+      initialInterval: 1s
+      backoffFactor: 1.0
+  dataPlane:
+    collector:
+      resources:
+        requests:
+          cpu: "500m"
+      ingress:
+        enabled: true
+        className: traefik
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    processor:
+      resources:
+        requests:
+          cpu: "500m"
+
+rdiMetricsExporter:
+  ingress:
+    enabled: true
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+
+ingress:
+  enabled: true
+  className: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure

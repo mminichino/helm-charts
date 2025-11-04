@@ -1,0 +1,22 @@
+{{- if .Values.rdiMetricsExporter.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: rdi-metrics-exporter
+  labels:
+    app: rdi-metrics-exporter
+    {{- with merge (.Values.rdiMetricsExporter.serviceMonitor.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with merge (.Values.rdiMetricsExporter.serviceMonitor.annotations | default dict) (.Values.global.annotations | default dict) }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  endpoints:
+    - path: /metrics
+      port: rdi-metrics
+  selector:
+    matchLabels:
+      app: rdi-metrics-exporter
+{{- end }}

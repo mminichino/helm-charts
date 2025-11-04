@@ -1,0 +1,43 @@
+{{- if .Values.global.vmMode }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: logrotate
+  labels:
+    app: logrotate
+    product: rdi
+    {{- with .Values.global.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.global.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  schedule: "*/{{ .Values.fluentd.logrotateMinutes }} * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          {{- with .Values.global.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          containers:
+            - name: logrotate
+              image: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}/{{ .Values.fluentd.image.name }}:{{ or .Values.fluentd.image.tag .Values.global.image.tag }}"
+              imagePullPolicy: {{ .Values.fluentd.image.pullPolicy }}
+              command: ["/bin/sh", "-c"]
+              args:
+                - logrotate /etc/logrotate.d/fluentd
+              securityContext:
+                runAsUser: 0
+              volumeMounts:
+                - name: output-volume
+                  mountPath: /fluentd/log
+          restartPolicy: OnFailure
+          volumes:
+            - name: output-volume
+              hostPath:
+                path: {{ or .Values.fluentd.rdiLogsHostPath "/opt/rdi/logs" }}
+{{- end }}

@@ -1,0 +1,48 @@
+# To integrate with Prometheus.
+{{- if and .Values.metrics.enabled .Values.prometheus.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: rdi-operator-metrics
+  namespace: {{ .Release.Namespace }}
+  labels:
+	  {{- include "chart.labels" . | nindent 4 }}
+    control-plane: operator
+    {{- with merge (.Values.prometheus.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with merge (.Values.prometheus.annotations | default dict) (.Values.global.annotations | default dict) }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  endpoints:
+    - path: /metrics
+      port: metrics
+      {{- if .Values.metrics.secure }}
+      scheme: https
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        {{- if and .Values.certmanager.enabled .Values.prometheus.certs }}
+        # Apply secure TLS configuration with cert-manager
+        insecureSkipVerify: false
+        ca:
+          secret:
+            name: rdi-operator-metrics-cert
+            key: ca.crt
+        cert:
+          secret:
+            name: rdi-operator-metrics-cert
+            key: tls.crt
+        keySecret:
+          name: rdi-operator-metrics-cert
+          key: tls.key
+        {{- else }}
+        # Development/Test mode (insecure configuration)
+        insecureSkipVerify: true
+        {{- end }}
+      {{- end }}
+  selector:
+    matchLabels:
+      {{- include "chart.selectorLabels" . | nindent 6 }}
+{{- end }}

@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rdi-metrics-exporter
+  labels:
+    app: rdi-metrics-exporter
+    product: rdi
+    {{- with merge (.Values.rdiMetricsExporter.service.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with merge (.Values.rdiMetricsExporter.service.annotations | default dict) (.Values.global.annotations | default dict) }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    app: rdi-metrics-exporter
+  ports:
+    - name: rdi-metrics
+      protocol: TCP
+      port: {{ .Values.rdiMetricsExporter.service.port }}
+      targetPort: 9121
+  type: {{ .Values.rdiMetricsExporter.service.type }}

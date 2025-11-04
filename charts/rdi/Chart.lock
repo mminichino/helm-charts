@@ -1,0 +1,9 @@
+dependencies:
+- name: rdi-operator
+  repository: file://../../operator/dist/chart
+  version: 0.0.0
+- name: reloader
+  repository: https://stakater.github.io/stakater-charts
+  version: 1.1.0
+digest: sha256:4f7b889ad45bd229a2f1ab880114e4ce7e4c7d2bd02ce3f421b43624436096e7
+generated: "2025-09-19T12:14:59.447155323+03:00"

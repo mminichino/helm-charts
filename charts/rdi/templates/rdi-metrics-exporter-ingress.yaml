@@ -1,0 +1,45 @@
+{{- if or .Values.rdiMetricsExporter.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rdi-metrics-exporter
+  labels:
+    app: rdi-metrics-exporter
+    product: rdi
+    {{- with merge (.Values.rdiMetricsExporter.ingress.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with merge (.Values.rdiMetricsExporter.ingress.annotations | default dict) (.Values.global.annotations | default dict) }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.rdiMetricsExporter.ingress.className }}
+  ingressClassName: {{ .Values.rdiMetricsExporter.ingress.className }}
+  {{- end }}
+  rules:
+  {{- if .Values.rdiMetricsExporter.ingress.hosts }}
+    {{- range $host := .Values.rdiMetricsExporter.ingress.hosts }}
+    - host: {{ $host }}
+      http:
+        paths:
+          - path: {{ $.Values.rdiMetricsExporter.ingress.pathPrefix }}/metrics
+            pathType: Prefix
+            backend:
+              service:
+                name: rdi-metrics-exporter
+                port:
+                  number: {{ $.Values.rdiMetricsExporter.service.port }}
+    {{- end }}
+  {{- else }}
+    - http:
+        paths:
+          - path: {{ .Values.rdiMetricsExporter.ingress.pathPrefix }}/metrics
+            pathType: Prefix
+            backend:
+              service:
+                name: rdi-metrics-exporter
+                port:
+                  number: {{ .Values.rdiMetricsExporter.service.port }}
+  {{- end }}
+{{- end }}

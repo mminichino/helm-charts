@@ -1,0 +1,35 @@
+{{- if .Values.rbac.enabled }}
+# permissions for end users to edit pipelinereleases.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: rdi-pipelinerelease-editor
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    {{- with merge (.Values.rbac.labels | default dict) (.Values.global.labels | default dict) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with merge (.Values.rbac.annotations | default dict) (.Values.global.annotations | default dict) }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+rules:
+- apiGroups:
+  - rdi.redis.com
+  resources:
+  - pipelinereleases
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - rdi.redis.com
+  resources:
+  - pipelinereleases/status
+  verbs:
+  - get
+{{- end -}}
