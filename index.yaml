@@ -44,6 +44,24 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/external-dns-gke-0.2.0/external-dns-gke-0.2.0.tgz
     version: 0.2.0
+  rdi:
+  - apiVersion: v2
+    created: "2025-11-04T16:30:56.147815201Z"
+    dependencies:
+    - alias: operator
+      name: rdi-operator
+      repository: file://charts/rdi-operator
+      version: 0.0.0
+    - name: reloader
+      repository: file://charts/reloader
+      version: 1.1.0
+    description: A Helm chart for Kubernetes
+    digest: f95fd76ea590eda7daef285968fe8812bedb03e79a840cd5c478ebcfc2165d64
+    name: rdi
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/rdi-1.15.0/rdi-1.15.0.tgz
+    version: 1.15.0
   redis-cluster:
   - apiVersion: v2
     appVersion: 8.0.2
@@ -657,4 +675,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-04T15:47:12.52480291Z"
+generated: "2025-11-04T16:30:56.147884794Z"
