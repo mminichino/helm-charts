@@ -23,6 +23,7 @@ spec:
     storageClassName: "{{ .Values.storage.class }}"
     volumeSize: {{ .Values.node.disk }}
   username: demo@redis.com
+  redisUpgradePolicy: {{ .Values.upgradePolicy | quote }}
   {{- if or (and .Values.tls.certificate .Values.tls.key) .Values.tls.secret }}
   certificates:
     proxyCertificateSecretName: proxy-cert-secret
@@ -52,6 +53,10 @@ spec:
   uiServiceType: ClusterIP
   {{- else }}
   uiServiceType: LoadBalancer
+  {{- end }}
+  {{- if and (eq .Values.ingress.type "lb") .Values.dns.domain }}
+  uiAnnotations:
+    external-dns.alpha.kubernetes.io/hostname: "redis-ui.{{ .Values.dns.domain }}"
   {{- end }}
   servicesRiggerSpec:
     {{- if .Values.ingress.enabled }}

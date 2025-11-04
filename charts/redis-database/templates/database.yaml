@@ -19,6 +19,7 @@ spec:
   type: redis
   databasePort: {{ .Values.port }}
   persistence: {{ .Values.persistence }}
+  redisVersion: {{ .Values.version | quote }}
   evictionPolicy: {{ .Values.eviction }}
   {{- if .Values.tls.enabled }}
   tlsMode: "enabled"

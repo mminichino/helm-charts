@@ -12,6 +12,7 @@ eviction: noeviction
 ossCluster: false
 proxyPolicy: all-master-shards
 persistence: aofEverySecond
+version: "latest"
 modules:
   - ReJSON
   - search
@@ -21,3 +22,5 @@ ingress:
 tls:
   enabled: false
   certificates: []
+dns:
+  domain: ""
