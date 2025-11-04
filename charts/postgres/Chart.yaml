@@ -2,7 +2,7 @@ apiVersion: v2
 name: postgres
 description: A Helm chart for PostgreSQL
 type: application
-version: 1.0.2
+version: 1.0.3
 appVersion: "16"
 keywords:
   - postgres
