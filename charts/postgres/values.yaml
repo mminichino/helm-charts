@@ -27,7 +27,7 @@ postgres:
     size: 10Gi
     accessMode: ReadWriteOnce
 
-  config: {}
+  config: ""
   hbaConfig: ""
 
 service:

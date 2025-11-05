@@ -8,10 +8,13 @@ metadata:
     {{- include "postgres.labels" . | nindent 4 }}
 data:
 {{- if .Values.postgres.config }}
-  custom.conf: |
-    {{- range $key, $value := .Values.postgres.config }}
-    {{ $key }} = '{{ $value }}'
-    {{- end }}
+  init-conf.sh: |
+    #!/bin/bash
+    set -e
+    echo "Adding custom configuration parameters..."
+    cat >> "${PGDATA}/postgresql.conf" << 'EOF'
+    {{ .Values.postgres.config }}
+    EOF
 {{- end }}
 {{- if .Values.postgres.hbaConfig }}
   init-hba.sh: |
