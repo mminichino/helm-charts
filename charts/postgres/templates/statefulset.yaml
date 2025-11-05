@@ -67,6 +67,11 @@ spec:
               mountPath: /etc/postgresql/postgresql.conf
               subPath: custom.conf
         {{- end }}
+        {{- if .Values.postgres.hbaConfig }}
+            - name: config
+              mountPath: /docker-entrypoint-initdb.d/01-init-hba.sh
+              subPath: init-hba.sh
+        {{- end }}
       {{- if .Values.exporter.enabled }}
         - name: exporter
           image: "{{ .Values.exporter.image.repository }}:{{ .Values.exporter.image.tag }}"

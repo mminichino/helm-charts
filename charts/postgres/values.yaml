@@ -28,6 +28,7 @@ postgres:
     accessMode: ReadWriteOnce
 
   config: {}
+  hbaConfig: ""
 
 service:
   clusterIP:

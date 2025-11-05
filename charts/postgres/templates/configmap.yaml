@@ -1,4 +1,4 @@
-{{- if .Values.postgres.config }}
+{{- if or .Values.postgres.config .Values.postgres.hbaConfig }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,8 +7,19 @@ metadata:
   labels:
     {{- include "postgres.labels" . | nindent 4 }}
 data:
+{{- if .Values.postgres.config }}
   custom.conf: |
     {{- range $key, $value := .Values.postgres.config }}
     {{ $key }} = '{{ $value }}'
     {{- end }}
+{{- end }}
+{{- if .Values.postgres.hbaConfig }}
+  init-hba.sh: |
+    #!/bin/bash
+    set -e
+    echo "Adding custom HBA configuration..."
+    cat >> "${PGDATA}/pg_hba.conf" << 'EOF'
+    {{ .Values.postgres.hbaConfig }}
+    EOF
+{{- end }}
 {{- end }}
