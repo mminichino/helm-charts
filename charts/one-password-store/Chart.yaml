@@ -1,0 +1,12 @@
+apiVersion: v2
+name: one-password-store
+description: A Helm chart for 1Password External Secrets
+type: application
+version: 0.1.0
+appVersion: "0.20.4"
+keywords:
+  - vault
+  - 1password
+  - secrets
+maintainers:
+  - name: Michael Minichino
