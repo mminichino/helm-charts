@@ -44,6 +44,23 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/external-dns-gke-0.2.0/external-dns-gke-0.2.0.tgz
     version: 0.2.0
+  one-password-store:
+  - apiVersion: v2
+    appVersion: 0.20.4
+    created: "2025-11-06T20:20:30.825424968Z"
+    description: A Helm chart for 1Password External Secrets
+    digest: 8863cc8d112951ceb99207e1239002da37cd8d591c33b7bfdfe22348289117ba
+    keywords:
+    - vault
+    - 1password
+    - secrets
+    maintainers:
+    - name: Michael Minichino
+    name: one-password-store
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/one-password-store-0.1.0/one-password-store-0.1.0.tgz
+    version: 0.1.0
   postgres:
   - apiVersion: v2
     appVersion: "16"
@@ -950,4 +967,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-05T19:33:58.629975271Z"
+generated: "2025-11-06T20:20:30.82554869Z"
