@@ -47,6 +47,22 @@ entries:
   one-password-store:
   - apiVersion: v2
     appVersion: 0.20.4
+    created: "2025-11-06T21:19:05.351833876Z"
+    description: A Helm chart for 1Password External Secrets
+    digest: cd3c3154e361c24c297476498764b3dd964a23e38e1e520b20d655a1f63605fa
+    keywords:
+    - vault
+    - 1password
+    - secrets
+    maintainers:
+    - name: Michael Minichino
+    name: one-password-store
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/one-password-store-0.1.2/one-password-store-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 0.20.4
     created: "2025-11-06T21:10:14.160868229Z"
     description: A Helm chart for 1Password External Secrets
     digest: 8b4b7e3454b559ade106c5d275106ee749787df9d391d0c5a68127b1bebb4241
@@ -983,4 +999,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-06T21:10:14.161014332Z"
+generated: "2025-11-06T21:19:05.35194827Z"
