@@ -275,6 +275,25 @@ entries:
   redis-cluster:
   - apiVersion: v2
     appVersion: 8.0.2
+    created: "2025-11-17T18:36:59.961055719Z"
+    description: Deploy a REC resource with the Redis Enterprise Operator
+    digest: 00cdcb062047e17ed8b41b5f5504fdb2a6d12a29726b8d2d4cb97488da2d4326
+    home: https://github.com/mminichino/helm-charts
+    keywords:
+    - kubernetes
+    - redis
+    maintainers:
+    - name: Michael Minichino
+      url: https://github.com/mminichino/helm-charts
+    name: redis-cluster
+    sources:
+    - https://github.com/mminichino/helm-charts
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/redis-cluster-0.1.22/redis-cluster-0.1.22.tgz
+    version: 0.1.22
+  - apiVersion: v2
+    appVersion: 8.0.2
     created: "2025-11-04T22:22:54.896229866Z"
     description: Deploy a REC resource with the Redis Enterprise Operator
     digest: 36659842ec4ac158ebeb5e0f6ca8147b53351646a422b88f3b247e294afa1dff
@@ -999,4 +1018,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-06T21:19:05.35194827Z"
+generated: "2025-11-17T18:36:59.961324161Z"
