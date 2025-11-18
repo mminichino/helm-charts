@@ -8,3 +8,11 @@
 {{- end -}}
 {{- $password -}}
 {{- end -}}
+
+{{- define "redis-database.passwordSecret" -}}
+{{- if .Values.passwordSecret }}
+{{- .Values.passwordSecret | quote }}
+{{- else }}
+{{- .Values.name | quote }}
+{{- end }}
+{{- end }}

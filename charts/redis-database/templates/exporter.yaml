@@ -1,0 +1,102 @@
+{{- if .Values.ossExporter.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.name }}-exporter"
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+  labels:
+    app: "{{ .Values.name }}-exporter"
+    component: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ .Values.name }}-exporter"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-exporter"
+        component: monitoring
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9121"
+        prometheus.io/path: "/metrics"
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
+
+      containers:
+        - name: redis-exporter
+          image: "{{ .Values.ossExporter.image }}:{{ .Values.ossExporter.version }}"
+          imagePullPolicy: IfNotPresent
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1001
+            capabilities:
+              drop:
+                - ALL
+
+          env:
+            - name: REDIS_HOST
+              value: "{{ .Values.name }}.{{ .Values.namespace | default .Release.Namespace }}.svc.cluster.local"
+            - name: REDIS_PORT
+              value: {{ .Values.port }}
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "redis-database.passwordSecret" }}
+                  key: password
+            - name: REDIS_USER
+              value: {{ .Values.username }}
+            - name: REDIS_ADDR
+              value: "redis://$(REDIS_HOST):$(REDIS_PORT)"
+
+          ports:
+            - name: metrics
+              containerPort: 9121
+              protocol: TCP
+
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+
+      volumes:
+        - name: tmp
+          emptyDir: {}
+{{- end }}
