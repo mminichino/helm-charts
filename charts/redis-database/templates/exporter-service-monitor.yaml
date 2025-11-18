@@ -20,8 +20,10 @@ spec:
       relabelings:
         - targetLabel: namespace
           replacement: {{ .Values.namespace | default .Release.Namespace }}
+          action: replace
         - targetLabel: database
           replacement: {{ .Values.name }}
+          action: replace
         - sourceLabels: [__meta_kubernetes_namespace]
           targetLabel: kubernetes_namespace
           action: replace
