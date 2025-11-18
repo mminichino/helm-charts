@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis-exporter
-  namespace: {{ .Release.Namespace }}
+  name: "{{ .Values.database }}-exporter"
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
   labels:
-    app: redis-exporter
+    app: "{{ .Values.database }}-exporter"
     component: monitoring
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis-exporter
+      app: "{{ .Values.database }}-exporter"
   template:
     metadata:
       labels:
-        app: redis-exporter
+        app: "{{ .Values.database }}-exporter"
         component: monitoring
       annotations:
         prometheus.io/scrape: "true"

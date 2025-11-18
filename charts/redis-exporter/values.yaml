@@ -1,6 +1,7 @@
 #
 
-hostname: ""
+namespace: ""
+database: "redb"
 username: "default"
 password: ""
 port: "12000"
