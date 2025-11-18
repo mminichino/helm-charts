@@ -1,0 +1,4 @@
+#
+
+serviceAccount: "external-secrets-sa"
+project: ""
