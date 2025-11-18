@@ -44,6 +44,23 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/external-dns-gke-0.2.0/external-dns-gke-0.2.0.tgz
     version: 0.2.0
+  gcsm-store:
+  - apiVersion: v2
+    appVersion: 0.20.4
+    created: "2025-11-18T19:55:33.766462828Z"
+    description: A Helm chart for Google Cloud Secret Manager External Secrets
+    digest: 52cb317c26638a2280d67656f2995480f168b1c8856ce7971f8bac46d1f9e359
+    keywords:
+    - vault
+    - gcp
+    - secrets
+    maintainers:
+    - name: Michael Minichino
+    name: gcsm-store
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/gcsm-store-0.1.2/gcsm-store-0.1.2.tgz
+    version: 0.1.2
   one-password-store:
   - apiVersion: v2
     appVersion: 0.20.4
@@ -1075,4 +1092,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-18T18:39:38.379233789Z"
+generated: "2025-11-18T19:55:33.76663036Z"
