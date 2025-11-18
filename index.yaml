@@ -942,6 +942,25 @@ entries:
   redis-exporter:
   - apiVersion: v2
     appVersion: v1.79.0
+    created: "2025-11-18T02:05:48.022164117Z"
+    description: Deploy the OSS Redis Exporter with the Redis Enterprise Operator
+    digest: 6e45ff8f53e0bfa8f6d72b0c058fff4ec380d333c8cad03f246a7b6bde8ed50a
+    home: https://github.com/mminichino/helm-charts
+    keywords:
+    - kubernetes
+    - redis
+    maintainers:
+    - name: Michael Minichino
+      url: https://github.com/mminichino/helm-charts
+    name: redis-exporter
+    sources:
+    - https://github.com/mminichino/helm-charts
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/redis-exporter-0.1.4/redis-exporter-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: v1.79.0
     created: "2025-10-28T16:17:13.782268766Z"
     description: Deploy the OSS Redis Exporter with the Redis Enterprise Operator
     digest: 2f521d985eb4b38cc3f3d6171f91c6cefe5146044aab05728c8e91fc5c3c5eb5
@@ -1018,4 +1037,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-17T18:36:59.961324161Z"
+generated: "2025-11-18T02:05:48.022288139Z"
