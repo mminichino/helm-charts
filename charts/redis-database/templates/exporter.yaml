@@ -48,14 +48,14 @@ spec:
             - name: REDIS_HOST
               value: "{{ .Values.name }}.{{ .Values.namespace | default .Release.Namespace }}.svc.cluster.local"
             - name: REDIS_PORT
-              value: {{ .Values.port }}
+              value: "{{ .Values.port }}"
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ include "redis-database.passwordSecret" . }}
                   key: password
             - name: REDIS_USER
-              value: {{ .Values.username }}
+              value: "{{ .Values.username }}"
             - name: REDIS_ADDR
               value: "redis://$(REDIS_HOST):$(REDIS_PORT)"
 
