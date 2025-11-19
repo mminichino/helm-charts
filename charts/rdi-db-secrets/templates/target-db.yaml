@@ -1,0 +1,12 @@
+{{- if not .Values.externalSecret.enabled }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: target-db
+  labels:
+    product: rdi
+type: Opaque
+data:
+  TARGET_DB_USERNAME: {{ .Values.connection.targetUsername | b64enc | quote }}
+  TARGET_DB_PASSWORD: {{ .Values.connection.targetPassword | b64enc | quote }}
+{{- end }}

@@ -1,0 +1,12 @@
+{{- if not .Values.externalSecret.enabled }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: source-db
+  labels:
+    product: rdi
+type: Opaque
+data:
+  SOURCE_DB_USERNAME: {{ .Values.connection.sourceUsername | b64enc | quote }}
+  SOURCE_DB_PASSWORD: {{ .Values.connection.sourcePassword | b64enc | quote }}
+{{- end }}

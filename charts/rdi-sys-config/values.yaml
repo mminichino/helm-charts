@@ -1,0 +1,22 @@
+#
+
+connection:
+  username: ""
+  password: ""
+  ssl:
+    enabled: false
+    cert: ""
+    key: ""
+    keyPassword: ""
+    cacert: ""
+
+externalSecret:
+  enabled: false
+  store:
+    kind: ClusterSecretStore
+    name: ""
+  password: ""
+  token: ""
+
+api:
+  jwtKey: "change_me"

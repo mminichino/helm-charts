@@ -1,0 +1,29 @@
+{{- if .Values.externalSecret.enabled }}
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: source-db
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: {{ .Values.externalSecret.store.kind }}
+    name: {{ .Values.externalSecret.store.name }}
+  target:
+    name: source-db
+    creationPolicy: Owner
+    template:
+      type: Opaque
+      metadata:
+        labels:
+          product: rdi
+      data:
+        SOURCE_DB_USERNAME: {{ .Values.connection.sourceUsername | b64enc | quote }}
+        SOURCE_DB_PASSWORD: {{ "{{ " }} .password {{ " }}" | quote }}
+  data:
+    - secretKey: password
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        metadataPolicy: None
+        key: {{ .Values.externalSecret.source }}
+{{- end }}

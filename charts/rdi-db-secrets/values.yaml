@@ -1,0 +1,15 @@
+#
+
+connection:
+  sourceUsername: ""
+  sourcePassword: ""
+  targetUsername: ""
+  targetPassword: ""
+
+externalSecret:
+  enabled: false
+  store:
+    kind: ClusterSecretStore
+    name: ""
+  source: ""
+  target: ""

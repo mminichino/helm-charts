@@ -1,0 +1,36 @@
+{{- if .Values.externalSecret.enabled }}
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: rdi-sys-config
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: {{ .Values.externalSecret.store.kind }}
+    name: {{ .Values.externalSecret.store.name }}
+  target:
+    name: rdi-sys-config
+    creationPolicy: Owner
+    template:
+      type: Opaque
+      metadata:
+        labels:
+          product: rdi
+      data:
+        RDI_REDIS_USERNAME: {{ .Values.connection.username | b64enc | quote }}
+        RDI_REDIS_PASSWORD: {{ "{{ " }} .password {{ " }}" | quote }}
+        JWT_SECRET_KEY: {{ "{{ " }} .token {{ " }}" | quote }}
+  data:
+    - secretKey: password
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        metadataPolicy: None
+        key: {{ .Values.externalSecret.password }}
+    - secretKey: token
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        metadataPolicy: None
+        key: {{ .Values.externalSecret.token }}
+{{- end }}
