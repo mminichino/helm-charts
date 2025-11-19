@@ -28,11 +28,16 @@ spec:
           image: "{{ .Values.postgres.image.repository }}:{{ .Values.postgres.image.tag }}"
           imagePullPolicy: {{ .Values.postgres.image.pullPolicy }}
           envFrom:
-            - secretRef:
-                name: {{ .Values.name }}
+            - configMapRef:
+                name: {{ .Values.name }}-env
           env:
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.name }}
+                  key: password
           ports:
             - name: postgres
               containerPort: 5432
@@ -76,12 +81,15 @@ spec:
         - name: exporter
           image: "{{ .Values.exporter.image.repository }}:{{ .Values.exporter.image.tag }}"
           imagePullPolicy: {{ .Values.exporter.image.pullPolicy }}
+          envFrom:
+            configMapRef:
+              name: {{ .Values.name }}-env
           env:
-            - name: DATA_SOURCE_NAME
+            - name: DATA_SOURCE_PASS
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.name }}
-                  key: DATA_SOURCE_NAME
+                  key: password
           ports:
             - name: metrics
               containerPort: {{ .Values.exporter.port }}

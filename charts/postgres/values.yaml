@@ -13,6 +13,13 @@ postgres:
     password: ""
     database: pgdb
 
+  externalSecret:
+    enabled: false
+    store:
+      kind: ClusterSecretStore
+      name: ""
+    key: ""
+
   resources:
     requests:
       memory: "256Mi"

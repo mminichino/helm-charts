@@ -15,3 +15,16 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/name: {{ .Values.name }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{- define "postgres.password" -}}
+{{- $secret := lookup "v1" "Secret" (.Values.namespace | default .Release.Namespace) .Values.name -}}
+{{- $password := "" -}}
+{{- if $secret -}}
+{{- $password = index $secret.data "password" | b64dec -}}
+{{- else if .Values.postgres.auth.password -}}
+{{- $password = .Values.postgres.auth.password -}}
+{{- else -}}
+{{- $password = randAlphaNum 16 -}}
+{{- end -}}
+{{- $password -}}
+{{- end }}
