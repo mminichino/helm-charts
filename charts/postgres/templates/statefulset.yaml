@@ -82,8 +82,8 @@ spec:
           image: "{{ .Values.exporter.image.repository }}:{{ .Values.exporter.image.tag }}"
           imagePullPolicy: {{ .Values.exporter.image.pullPolicy }}
           envFrom:
-            configMapRef:
-              name: {{ .Values.name }}-env
+            - configMapRef:
+               name: {{ .Values.name }}-env
           env:
             - name: DATA_SOURCE_PASS
               valueFrom:
