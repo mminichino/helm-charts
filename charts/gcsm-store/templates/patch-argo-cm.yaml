@@ -28,4 +28,5 @@ spec:
                   "resource.customizations.ignoreResourceUpdates.external-secrets.io_ExternalSecret": "jsonPointers:\n  - /status/refreshTime\n  - /status/syncedResourceVersion\n"
                 }
               }'
+              kubectl rollout restart statefulset argocd-application-controller -n {{ .Values.argo.namespace }}
 {{- end }}
