@@ -47,6 +47,22 @@ entries:
   gcsm-store:
   - apiVersion: v2
     appVersion: 0.20.4
+    created: "2025-11-19T00:40:29.819558398Z"
+    description: A Helm chart for Google Cloud Secret Manager External Secrets
+    digest: 60f62b998806845ab2c9cd891cc1516fc09956f2947c0b470e71958c0bfbf744
+    keywords:
+    - vault
+    - gcp
+    - secrets
+    maintainers:
+    - name: Michael Minichino
+    name: gcsm-store
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/gcsm-store-0.1.5/gcsm-store-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 0.20.4
     created: "2025-11-18T21:59:45.777354963Z"
     description: A Helm chart for Google Cloud Secret Manager External Secrets
     digest: 21c20472eb0c7375a0d01e0b9ac125c5e44c0361ab5b7a7ec627b5b366c9571c
@@ -1184,4 +1200,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-18T23:53:53.869989994Z"
+generated: "2025-11-19T00:40:29.819840045Z"
