@@ -369,6 +369,40 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/rdi-1.15.0/rdi-1.15.0.tgz
     version: 1.15.0
+  rdi-db-secrets:
+  - apiVersion: v2
+    appVersion: 1.15.0
+    created: "2025-11-19T18:15:26.043605683Z"
+    description: A Helm chart for creating the RDI source and target db secrets
+    digest: 82375693c0d5689b758bdaf70dd3bd66034dc576c2f32ed3e625a7f9ea372f31
+    keywords:
+    - rdi
+    - redis
+    - secrets
+    maintainers:
+    - name: Michael Minichino
+    name: rdi-db-secrets
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/rdi-db-secrets-0.1.0/rdi-db-secrets-0.1.0.tgz
+    version: 0.1.0
+  rdi-sys-config:
+  - apiVersion: v2
+    appVersion: 1.15.0
+    created: "2025-11-19T18:15:26.180207095Z"
+    description: A Helm chart for creating the RDI rdi-sys-config secret
+    digest: b0fee98ab29f6118fad8c5c27a1545aa92cb3c3656f41d1128a6360a421a81cf
+    keywords:
+    - rdi
+    - redis
+    - secrets
+    maintainers:
+    - name: Michael Minichino
+    name: rdi-sys-config
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/rdi-sys-config-0.1.0/rdi-sys-config-0.1.0.tgz
+    version: 0.1.0
   redis-cluster:
   - apiVersion: v2
     appVersion: 8.0.2
@@ -1305,4 +1339,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-19T15:52:22.086426096Z"
+generated: "2025-11-19T18:15:26.1804428Z"
