@@ -353,6 +353,23 @@ entries:
     version: 1.0.0
   rdi:
   - apiVersion: v2
+    created: "2025-11-19T19:32:19.093659611Z"
+    dependencies:
+    - alias: operator
+      name: rdi-operator
+      repository: file://charts/rdi-operator
+      version: 0.0.0
+    - name: reloader
+      repository: file://charts/reloader
+      version: 1.1.1
+    description: A Helm chart for Kubernetes
+    digest: c508e3017b2ad7281ad96fdd9cbdc78f1a5e157afbc64c80c989855d3a9d2687
+    name: rdi
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/rdi-1.15.1/rdi-1.15.1.tgz
+    version: 1.15.1
+  - apiVersion: v2
     created: "2025-11-04T16:30:56.147815201Z"
     dependencies:
     - alias: operator
@@ -1371,4 +1388,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-19T19:02:56.47193251Z"
+generated: "2025-11-19T19:32:19.093769555Z"
