@@ -17,8 +17,8 @@ spec:
         labels:
           product: rdi
       data:
-        TARGET_DB_USERNAME: {{ .Values.connection.targetUsername | b64enc | quote }}
-        TARGET_DB_PASSWORD: {{ "{{ " }} .password {{ " }}" | quote }}
+        TARGET_DB_USERNAME: {{ .Values.connection.targetUsername | quote }}
+        TARGET_DB_PASSWORD: "{{ `{{` }} .password {{ `}}` }}"
   data:
     - secretKey: password
       remoteRef:

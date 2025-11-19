@@ -2,7 +2,7 @@ apiVersion: v2
 name: rdi-sys-config
 description: A Helm chart for creating the RDI rdi-sys-config secret
 type: application
-version: 0.1.0
+version: 0.1.1
 appVersion: "1.15.0"
 keywords:
   - rdi

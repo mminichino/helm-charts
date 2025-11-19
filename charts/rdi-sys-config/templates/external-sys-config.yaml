@@ -17,9 +17,9 @@ spec:
         labels:
           product: rdi
       data:
-        RDI_REDIS_USERNAME: {{ .Values.connection.username | b64enc | quote }}
-        RDI_REDIS_PASSWORD: {{ "{{ " }} .password {{ " }}" | quote }}
-        JWT_SECRET_KEY: {{ "{{ " }} .token {{ " }}" | quote }}
+        RDI_REDIS_USERNAME: {{ .Values.connection.username | quote }}
+        RDI_REDIS_PASSWORD: "{{ `{{` }} .password {{ `}}` }}"
+        JWT_SECRET_KEY: "{{ `{{` }} .token {{ `}}` }}"
   data:
     - secretKey: password
       remoteRef:
