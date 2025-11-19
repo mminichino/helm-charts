@@ -1,0 +1,31 @@
+{{- if .Values.argo.patch }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: external-secret-patch-argocd-cm
+  namespace: {{ .Values.argo.namespace }}
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      serviceAccountName: argocd-server
+      restartPolicy: Never
+      containers:
+        - name: patch-cm
+          image: mminichino/kubectl:latest
+          command: ["/bin/bash"]
+          args:
+            - "-c"
+            - |
+              set -e
+
+              kubectl patch configmap argocd-cm -n {{ .Values.argo.namespace }} --type merge -p '{
+                "data": {
+                  "resource.customizations.ignoreResourceUpdates.external-secrets.io_ExternalSecret": "jsonPointers:\n  - /status/refreshTime\n  - /status/syncedResourceVersion\n"
+                }
+              }'
+{{- end }}
