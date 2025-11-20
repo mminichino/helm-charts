@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-di-cli
+  labels:
+    app: redis-di
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-di
+  template:
+    metadata:
+      labels:
+        app: redis-di
+    spec:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+      containers:
+        - name: redis-di
+          image: "{{ .Values.image }}:{{ .Values.version }}"
+          imagePullPolicy: Always
+          env:
+            - name: RDI_HOST
+              value: "rdi-api.{{ .Values.namespace | default .Release.Namespace }}.svc.cluster.local"
+            - name: RDI_PORT
+              value: {{ .Values.port | quote }}
+            - name: RDI_USER
+              valueFrom:
+                secretKeyRef:
+                  name: rdi-sys-config
+                  key: RDI_REDIS_USERNAME
+            - name: RDI_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: rdi-sys-config
+                  key: RDI_REDIS_PASSWORD
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"

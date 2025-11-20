@@ -1,0 +1,6 @@
+#
+
+namespace: ""
+port: "8080"
+image: "codelry/redis-di"
+version: "latest"
