@@ -1,6 +1,7 @@
 #
 
-namespace: ""
-port: "8080"
+namespace: "redis"
+database: "rdidb"
+port: "12001"
 image: "codelry/redis-di"
 version: "latest"

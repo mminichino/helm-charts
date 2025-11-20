@@ -24,7 +24,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: RDI_HOST
-              value: "rdi-api.{{ .Values.namespace | default .Release.Namespace }}.svc.cluster.local"
+              value: "{{ .Values.database }}.{{ .Values.namespace }}.svc.cluster.local"
             - name: RDI_PORT
               value: {{ .Values.port | quote }}
             - name: RDI_USER
