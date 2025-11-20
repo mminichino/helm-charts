@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: redis-di-cli
+  labels:
+    app: redis-di
+subjects:
+  - kind: ServiceAccount
+    name: redis-di-cli
+    namespace: {{ .Values.namespace }}
+roleRef:
+  kind: ClusterRole
+  name: redis-di-cli
+  apiGroup: rbac.authorization.k8s.io
