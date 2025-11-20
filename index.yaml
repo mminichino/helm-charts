@@ -1293,6 +1293,22 @@ entries:
   redis-di-cli:
   - apiVersion: v2
     appVersion: 1.15.0
+    created: "2025-11-20T01:22:15.194739056Z"
+    description: A Helm chart for running the RDI CLI
+    digest: c7d3442a928c8413b231b3d6d5dbb32c8a4dded57fe4784d82f7d791ea5d50f5
+    keywords:
+    - rdi
+    - redis
+    - cli
+    maintainers:
+    - name: Michael Minichino
+    name: redis-di-cli
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/redis-di-cli-0.1.1/redis-di-cli-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.15.0
     created: "2025-11-20T00:56:33.76215701Z"
     description: A Helm chart for running the RDI CLI
     digest: d1d0daf9584f1601d1030131921eb3c2ca8dbfef7bdd6ca2a3725aa2067801da
@@ -1405,4 +1421,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-20T00:56:33.762244373Z"
+generated: "2025-11-20T01:22:15.194894667Z"
