@@ -29,3 +29,10 @@ tls:
   certificate: ""
   key: ""
   secret: ""
+
+externalSecret:
+  enabled: false
+  store:
+    kind: ClusterSecretStore
+    name: ""
+  key: ""

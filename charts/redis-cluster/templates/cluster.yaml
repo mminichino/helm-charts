@@ -33,8 +33,8 @@ spec:
   {{- end }}
   {{- if and .Values.ingress.enabled .Values.dns.domain }}
   ingressOrRouteSpec:
-    apiFqdnUrl: "redis-api.{{ .Values.dns.domain }}"
-    dbFqdnSuffix: "{{ .Values.dns.domain }}"
+    apiFqdnUrl: "api-{{ .Values.name }}.{{ .Values.dns.domain }}"
+    dbFqdnSuffix: "-db-{{ .Values.name }}.{{ .Values.dns.domain }}"
     {{- if or (eq .Values.ingress.type "nginx") (eq .Values.ingress.type "haproxy") }}
     method: ingress
     {{- else if eq .Values.ingress.type "route" }}

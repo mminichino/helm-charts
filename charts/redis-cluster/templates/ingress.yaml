@@ -4,7 +4,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: "{{ .Values.name }}-ui"
+  name: "ui-{{ .Values.name }}"
   namespace: {{ .Values.namespace | default .Release.Namespace }}
   {{- if eq .Values.ingress.type "haproxy" }}
   annotations:
@@ -19,7 +19,7 @@ metadata:
   {{- end }}
 spec:
   rules:
-    - host: "redis-ui.{{ .Values.dns.domain }}"
+    - host: "ui-{{ .Values.name }}.{{ .Values.dns.domain }}"
       http:
         paths:
           - path: /
