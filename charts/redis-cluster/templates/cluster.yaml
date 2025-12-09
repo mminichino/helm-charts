@@ -24,12 +24,28 @@ spec:
     volumeSize: {{ .Values.node.disk }}
   username: demo@redis.com
   redisUpgradePolicy: {{ .Values.upgradePolicy | quote }}
-  {{- if and .Values.tls.certificate .Values.tls.key }}
+  {{- $tlsSecret := .Values.tls.secret | default "" }}
+  {{- $syncerSecret := .Values.syncer.secret | default "" }}
+  {{- $tlsCert := .Values.tls.certificate | default "" }}
+  {{- $syncerCert := .Values.syncer.certificate | default "" }}
+  {{- $tlsKey := .Values.tls.key | default "" }}
+  {{- $syncerKey := .Values.syncer.key | default "" }}
+  {{- if or (and $tlsCert $tlsKey) (and $syncerCert $syncerKey)}}
   certificates:
+    {{- if and $tlsCert $tlsKey }}
     proxyCertificateSecretName: proxy-cert-secret
-  {{- else if .Values.tls.secret }}
+    {{- end }}
+    {{- if and $syncerCert $syncerKey }}
+    syncerCertificateSecretName: syncer-cert-secret
+    {{- end }}
+  {{- else if or $tlsSecret $syncerSecret }}
   certificates:
+    {{- if $tlsSecret }}
     proxyCertificateSecretName: {{ .Values.tls.secret }}
+    {{- end }}
+    {{- if $syncerSecret }}
+    syncerCertificateSecretName: {{ .Values.syncer.secret }}
+    {{- end }}
   {{- end }}
   {{- if and .Values.ingress.enabled .Values.dns.domain }}
   ingressOrRouteSpec:

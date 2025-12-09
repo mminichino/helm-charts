@@ -29,6 +29,10 @@ tls:
   certificate: ""
   key: ""
   secret: ""
+syncer:
+  certificate: ""
+  key: ""
+  secret: ""
 
 externalSecret:
   enabled: false
