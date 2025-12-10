@@ -16,7 +16,7 @@ node:
 
 ingress:
   enabled: false
-  type: "nginx"
+  type: "haproxy"
 
 storage:
   class: "standard"
