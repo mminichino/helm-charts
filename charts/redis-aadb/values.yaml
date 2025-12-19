@@ -1,0 +1,46 @@
+#
+localName: "rceast"
+localCluster: "redis-east-cluster"
+localNamespace: "redis-east"
+localApiUrl: ""
+localSuffix: ""
+localAdminUsername: ""
+localAdminPassword: ""
+remoteName: "rcwest"
+remoteCluster: "redis-west-cluster"
+remoteNamespace: "redis-west"
+remoteApiUrl: ""
+remoteSuffix: ""
+remoteAdminUsername: ""
+remoteAdminPassword: ""
+
+name: "reaadb"
+namespace: ""
+username: "default"
+memory: "1GB"
+replication: true
+shards: 1
+placement: sparse
+port: 12000
+eviction: noeviction
+ossCluster: false
+proxyPolicy: all-master-shards
+persistence: aofEverySecond
+version: "latest"
+modules:
+  - ReJSON
+  - search
+  - timeseries
+ingress:
+  type: "none"
+tls:
+  enabled: false
+  certificates: []
+dns:
+  domain: ""
+externalSecret:
+  enabled: false
+  store:
+    kind: ClusterSecretStore
+    name: ""
+  key: ""

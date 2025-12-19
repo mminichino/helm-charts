@@ -1,0 +1,21 @@
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseRemoteCluster
+metadata:
+  name: rceast
+spec:
+  recName: redis-east-cluster
+  recNamespace: redis-east
+  apiFqdnUrl: api-redis-east-cluster.ingress.usc1-demo.gcp.sa.redislabs.com
+  dbFqdnSuffix: -db-redis-east-cluster.ingress.usc1-demo.gcp.sa.redislabs.com
+  secretName: redis-enterprise-rceast
+---
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseRemoteCluster
+metadata:
+  name: rcwest
+spec:
+  recName: redis-west-cluster
+  recNamespace: redis-west
+  apiFqdnUrl: api-redis-west-cluster.ingress.usw4-demo.gcp.sa.redislabs.com
+  dbFqdnSuffix: -db-redis-west-cluster.ingress.usw4-demo.gcp.sa.redislabs.com
+  secretName: redis-enterprise-rcwest

@@ -1,0 +1,8 @@
+apiVersion: v1
+metadata:
+  name: redis-enterprise-rcwest
+data:
+  password: dFlJMkw1ZFM=
+  username: ZGVtb0ByZWRpcy5jb20=
+kind: Secret
+type: Opaque

@@ -1,0 +1,17 @@
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseActiveActiveDatabase
+metadata:
+  name: reaadb
+spec:
+  participatingClusters:
+    - name: rceast
+    - name: rcwest
+  globalConfigurations:
+    shardCount: 2
+    databasePort: 12012
+    memorySize: 1GB
+    persistence: aofEverySecond
+    proxyPolicy: all-master-shards
+    replication: true
+    shardsPlacement: sparse
+    databaseSecretName: reaadb-secret
