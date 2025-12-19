@@ -22,7 +22,7 @@ spec:
     enabled: true
     storageClassName: "{{ .Values.storage.class }}"
     volumeSize: {{ .Values.node.disk }}
-  username: demo@redis.com
+  username: {{ .Values.username }}
   redisUpgradePolicy: {{ .Values.upgradePolicy | quote }}
   {{- $tlsSecret := .Values.tls.secret | default "" }}
   {{- $syncerSecret := .Values.syncer.secret | default "" }}
