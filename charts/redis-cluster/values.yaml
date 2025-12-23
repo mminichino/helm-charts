@@ -5,7 +5,6 @@ namespace: ""
 
 license: ""
 
-version: "8.0.2-41"
 upgradePolicy: "latest"
 
 username: "admin@redis.com"
