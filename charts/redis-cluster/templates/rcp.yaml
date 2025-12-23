@@ -1,0 +1,14 @@
+{{- if .Values.externalSecret.enabled }}
+apiVersion: util.redislabs.com/v1
+kind: RedisClusterPassword
+metadata:
+  name: redis-admin-password
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+spec:
+  secret:
+    name: admin-password-secret
+    namespace: {{ .Values.namespace | default .Release.Namespace }}
+  rec:
+    name: {{ .Values.name }}
+    namespace: {{ .Values.namespace | default .Release.Namespace }}
+{{- end }}
