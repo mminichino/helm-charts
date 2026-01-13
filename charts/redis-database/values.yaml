@@ -20,10 +20,7 @@ ossExporter:
   enabled: false
   image: "codelry/redis-exporter"
   version: "v1.79.0"
-modules:
-  - ReJSON
-  - search
-  - timeseries
+modules: []
 ingress:
   type: "none"
 tls:
