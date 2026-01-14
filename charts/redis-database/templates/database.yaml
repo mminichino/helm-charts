@@ -12,7 +12,7 @@ spec:
   proxyPolicy: {{ .Values.proxyPolicy }}
   {{- end }}
   memorySize: {{ .Values.memory }}
-  databaseSecretName: {{ include "redis-database.passwordSecret" . }}
+  databaseSecretName: {{ .Values.name }}
   replication: {{ .Values.replication }}
   shardCount: {{ .Values.shards }}
   shardsPlacement: {{ .Values.placement }}

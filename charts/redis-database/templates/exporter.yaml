@@ -52,7 +52,7 @@ spec:
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "redis-database.passwordSecret" . }}
+                  name: {{ .Values.name }}
                   key: password
             - name: REDIS_USER
               value: "{{ .Values.username }}"
