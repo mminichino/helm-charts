@@ -2,7 +2,7 @@ apiVersion: v2
 name: redis-cluster
 description: Deploy a REC resource with the Redis Enterprise Operator
 type: application
-version: 0.2.2
+version: 0.3.0
 appVersion: "8.0.2"
 keywords:
   - kubernetes
@@ -14,9 +14,6 @@ maintainers:
   - name: Michael Minichino
     url: https://github.com/mminichino/helm-charts
 dependencies:
-  - name: redis-enterprise-operator
-    version: 8.0.6-8
-    repository: https://helm.redis.io
   - name: redis-password-operator
     version: 1.0.0
     repository: https://mminichino.github.io/redis-password-operator
