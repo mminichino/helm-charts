@@ -1,18 +1,3 @@
 {{- define "redis-database.password" -}}
-{{- $secret := lookup "v1" "Secret" (.Values.namespace | default .Release.Namespace) .Values.name -}}
-{{- $password := "" -}}
-{{- if $secret -}}
-{{- $password = index $secret.data "password" | b64dec -}}
-{{- else -}}
-{{- $password = default (randAlphaNum 8) .Values.password -}}
+{{- .Values.password | default randAlphaNum 16 -}}
 {{- end -}}
-{{- $password -}}
-{{- end -}}
-
-{{- define "redis-database.passwordSecret" -}}
-{{- if .Values.passwordSecret }}
-{{- .Values.passwordSecret | quote }}
-{{- else }}
-{{- .Values.name | quote }}
-{{- end }}
-{{- end }}
