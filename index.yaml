@@ -44,6 +44,28 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/external-dns-gke-0.2.0/external-dns-gke-0.2.0.tgz
     version: 0.2.0
+  external-dns-oci:
+  - apiVersion: v2
+    appVersion: v0.20.0
+    created: "2026-01-16T00:29:06.136349257Z"
+    description: A Helm chart for External DNS on OCI with Oracle Cloud DNS support
+    digest: 0d2e3173e172799a492b18a416f7a86f759546d15d06c56b5892fd00ca7ccd02
+    home: https://github.com/kubernetes-sigs/external-dns
+    keywords:
+    - external-dns
+    - dns
+    - oci
+    - oracle-cloud
+    maintainers:
+    - name: External DNS Team
+      url: https://github.com/kubernetes-sigs/external-dns
+    name: external-dns-oci
+    sources:
+    - https://github.com/kubernetes-sigs/external-dns
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/external-dns-oci-0.1.0/external-dns-oci-0.1.0.tgz
+    version: 0.1.0
   gcsm-store:
   - apiVersion: v2
     appVersion: 0.20.4
@@ -1798,4 +1820,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2026-01-14T20:31:06.327005592Z"
+generated: "2026-01-16T00:29:06.136770085Z"
