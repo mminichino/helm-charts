@@ -1,0 +1,17 @@
+apiVersion: v2
+name: external-dns-oci
+description: A Helm chart for External DNS on OCI with Oracle Cloud DNS support
+type: application
+version: 0.1.0
+appVersion: "v0.20.0"
+keywords:
+  - external-dns
+  - dns
+  - oci
+  - oracle-cloud
+home: https://github.com/kubernetes-sigs/external-dns
+sources:
+  - https://github.com/kubernetes-sigs/external-dns
+maintainers:
+  - name: External DNS Team
+    url: https://github.com/kubernetes-sigs/external-dns
