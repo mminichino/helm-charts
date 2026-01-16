@@ -2,6 +2,7 @@
 
 serviceAccount: "external-secrets"
 vault: ""
+region: "us-chicago-1"
 argo:
   patch: false
   namespace: "argocd"
