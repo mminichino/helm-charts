@@ -180,6 +180,23 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/one-password-store-0.1.0/one-password-store-0.1.0.tgz
     version: 0.1.0
+  oracle-vault-store:
+  - apiVersion: v2
+    appVersion: 0.20.4
+    created: "2026-01-16T20:17:51.775930169Z"
+    description: A Helm chart for Oracle Vault External Secrets
+    digest: fb1407320703e319ee56a2861a8d17b1748b89a97bd99708fdab2dae256f5bc0
+    keywords:
+    - vault
+    - oci
+    - secrets
+    maintainers:
+    - name: Michael Minichino
+    name: oracle-vault-store
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/oracle-vault-store-0.1.0/oracle-vault-store-0.1.0.tgz
+    version: 0.1.0
   postgres:
   - apiVersion: v2
     appVersion: "16"
@@ -1820,4 +1837,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2026-01-16T00:29:06.136770085Z"
+generated: "2026-01-16T20:17:51.776190437Z"
