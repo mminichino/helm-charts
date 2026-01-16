@@ -183,6 +183,22 @@ entries:
   oracle-vault-store:
   - apiVersion: v2
     appVersion: 0.20.4
+    created: "2026-01-16T23:09:54.205173074Z"
+    description: A Helm chart for Oracle Vault External Secrets
+    digest: 50f6085659158fa9dd7c7a87013b85b7edf3ab95874008b0a588460a4106c9fa
+    keywords:
+    - vault
+    - oci
+    - secrets
+    maintainers:
+    - name: Michael Minichino
+    name: oracle-vault-store
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/oracle-vault-store-0.1.2/oracle-vault-store-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 0.20.4
     created: "2026-01-16T20:29:53.991802485Z"
     description: A Helm chart for Oracle Vault External Secrets
     digest: 96ee69369f5959f1adb3847c9c78af0f94fa92bc8afdaeae45cfc47c3f3f8302
@@ -1853,4 +1869,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2026-01-16T20:29:53.992026632Z"
+generated: "2026-01-16T23:09:54.205429512Z"
