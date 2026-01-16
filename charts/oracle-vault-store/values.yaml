@@ -1,0 +1,7 @@
+#
+
+serviceAccount: "external-secrets"
+vault: ""
+argo:
+  patch: false
+  namespace: "argocd"

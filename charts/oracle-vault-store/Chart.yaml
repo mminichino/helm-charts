@@ -1,0 +1,12 @@
+apiVersion: v2
+name: oracle-vault-store
+description: A Helm chart for Oracle Vault External Secrets
+type: application
+version: 0.1.0
+appVersion: "0.20.4"
+keywords:
+  - vault
+  - oci
+  - secrets
+maintainers:
+  - name: Michael Minichino
