@@ -23,6 +23,7 @@ ossExporter:
 modules: []
 ingress:
   type: "none"
+  name: "haproxy"
 tls:
   enabled: false
   certificates: []
