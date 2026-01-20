@@ -31,11 +31,13 @@ postgres:
   persistence:
     enabled: true
     storageClass: ""
-    size: 10Gi
+    size: 16Gi
     accessMode: ReadWriteOnce
 
-  config: ""
-  hbaConfig: ""
+  config: |
+    wal_level = logical
+  hbaConfig: |
+    host    replication     all             0.0.0.0/0            trust
 
 service:
   clusterIP:
@@ -46,7 +48,13 @@ service:
   loadBalancer:
     enabled: false
     port: 5432
-    annotations: {}
+
+  ingress:
+    enabled: false
+    type: "haproxy"
+
+dns:
+  domain: ""
 
 exporter:
   enabled: false
@@ -68,7 +76,8 @@ exporter:
   serviceMonitor:
     enabled: false
     interval: 30s
-    labels: {}
+    labels:
+      release: prometheus
 
 podAnnotations: {}
 

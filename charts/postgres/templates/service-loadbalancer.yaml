@@ -6,9 +6,9 @@ metadata:
   namespace: {{ .Values.namespace | default .Release.Namespace }}
   labels:
     {{- include "postgres.labels" . | nindent 4 }}
-  {{- if .Values.service.loadBalancer.annotations }}
+  {{- if .Values.dns.domain }}
   annotations:
-    {{- toYaml .Values.service.loadBalancer.annotations | nindent 4 }}
+    external-dns.alpha.kubernetes.io/hostname: "postgres.{{ .Values.dns.domain }}"
   {{- end }}
 spec:
   type: LoadBalancer
