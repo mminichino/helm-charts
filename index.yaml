@@ -232,6 +232,22 @@ entries:
   postgres:
   - apiVersion: v2
     appVersion: "16"
+    created: "2026-01-20T18:11:23.280097884Z"
+    description: A Helm chart for PostgreSQL
+    digest: 0b6895afa7b04ed6d2be8dfc243f25b13be1c4bfb6f18cc053b3903ea3b3b37f
+    keywords:
+    - postgres
+    - postgresql
+    - database
+    maintainers:
+    - name: Michael Minichino
+    name: postgres
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/postgres-1.0.12/postgres-1.0.12.tgz
+    version: 1.0.12
+  - apiVersion: v2
+    appVersion: "16"
     created: "2025-11-19T15:52:22.086237913Z"
     description: A Helm chart for PostgreSQL
     digest: 250ab41c08779541c4728814a038faca07a798f3eaad9cc5a69156472ec15774
@@ -1179,6 +1195,25 @@ entries:
   redis-database:
   - apiVersion: v2
     appVersion: 8.0.2
+    created: "2026-01-20T18:11:23.519085094Z"
+    description: Deploy a REDB resource with the Redis Enterprise Operator
+    digest: 2361aff53fee9bd6e44df7a654e45f2cd90e348176fa7a1bf183afa94897fb22
+    home: https://github.com/mminichino/helm-charts
+    keywords:
+    - kubernetes
+    - redis
+    maintainers:
+    - name: Michael Minichino
+      url: https://github.com/mminichino/helm-charts
+    name: redis-database
+    sources:
+    - https://github.com/mminichino/helm-charts
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/redis-database-0.2.3/redis-database-0.2.3.tgz
+    version: 0.2.3
+  - apiVersion: v2
+    appVersion: 8.0.2
     created: "2026-01-14T20:31:06.326588464Z"
     description: Deploy a REDB resource with the Redis Enterprise Operator
     digest: b45e1750249a7e86a86c4cb8549287145a9696dc0260671445ff885441e208d5
@@ -1869,4 +1904,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2026-01-16T23:09:54.205429512Z"
+generated: "2026-01-20T18:11:23.519621677Z"
