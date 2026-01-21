@@ -52,6 +52,7 @@ service:
   ingress:
     enabled: false
     type: "haproxy"
+    name: "haproxy"
 
 dns:
   domain: ""
