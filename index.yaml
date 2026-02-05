@@ -2,6 +2,22 @@ apiVersion: v1
 entries:
   argocd-config:
   - apiVersion: v2
+    appVersion: 0.1.2
+    created: "2026-02-05T19:29:54.567815467Z"
+    description: A Helm chart for adding ArgoCD config resources
+    digest: 8ddec4cbb4c1915bc778dabd9003fb597b032a91bc13d88e468dc516f8293456
+    keywords:
+    - argocd
+    - config
+    - project
+    maintainers:
+    - name: Michael Minichino
+    name: argocd-config
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/argocd-config-0.1.2/argocd-config-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
     appVersion: 0.1.1
     created: "2026-02-05T19:24:28.782111721Z"
     description: A Helm chart for adding ArgoCD config resources
@@ -1972,4 +1988,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-05T19:24:28.782351437Z"
+generated: "2026-02-05T19:29:54.567993431Z"
