@@ -2,8 +2,8 @@ apiVersion: v2
 name: argocd-config
 description: A Helm chart for adding ArgoCD config resources
 type: application
-version: 0.1.1
-appVersion: "0.1.1"
+version: 0.1.2
+appVersion: "0.1.2"
 keywords:
   - argocd
   - config
