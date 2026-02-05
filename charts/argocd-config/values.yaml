@@ -1,0 +1,10 @@
+#
+
+name: "redis-apps"
+description: "Redis Apps"
+repository: ""
+externalSecret:
+  store:
+    kind: ClusterSecretStore
+    name: ""
+  key: ""
