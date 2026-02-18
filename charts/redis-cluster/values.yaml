@@ -9,6 +9,8 @@ upgradePolicy: "latest"
 
 username: "admin@redis.com"
 
+openshift: false
+
 node:
   count: 3
   cpu: "4"
