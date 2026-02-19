@@ -16,7 +16,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: lb-ip-config
-          image: mminichino/kubectl:latest
+          image: docker.io/mminichino/kubectl:latest
           command: ["/bin/bash"]
           args:
             - "-c"
