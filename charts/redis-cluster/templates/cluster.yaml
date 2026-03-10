@@ -15,7 +15,7 @@ spec:
     repository: registry.connect.redhat.com/redislabs/redis-enterprise-operator
   {{- end }}
   {{- if .Values.externalSecret.enabled }}
-  clusterCredentialSecretName: "{{ .Values.name }}-credentials"
+  clusterCredentialSecretName: admin-password-secret
   {{- end }}
   redisEnterpriseNodeResources:
     limits:
