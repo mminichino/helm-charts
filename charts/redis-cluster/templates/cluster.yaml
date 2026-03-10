@@ -14,6 +14,9 @@ spec:
   bootstrapperImageSpec:
     repository: registry.connect.redhat.com/redislabs/redis-enterprise-operator
   {{- end }}
+  {{- if .Values.externalSecret.enabled }}
+  clusterCredentialSecretName: "{{ .Values.name }}-credentials"
+  {{- end }}
   redisEnterpriseNodeResources:
     limits:
       cpu: {{ .Values.node.cpu | quote }}
