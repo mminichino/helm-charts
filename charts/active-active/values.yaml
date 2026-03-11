@@ -6,6 +6,8 @@ namespace: ""
 
 username: "admin@redis.com"
 
+tls: true
+
 localName: east
 remoteName: west
 
