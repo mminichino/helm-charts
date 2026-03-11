@@ -2,7 +2,7 @@
 
 name: reaadb
 
-namespace: redis
+namespace: ""
 
 username: "admin@redis.com"
 
