@@ -1,0 +1,11 @@
+apiVersion: v2
+name: active-remote
+description: A Helm chart for configuring the remote side in an active-active Redis deployment
+type: application
+version: 0.1.0
+appVersion: "8.0.10"
+keywords:
+  - redis
+  - database
+maintainers:
+  - name: Michael Minichino

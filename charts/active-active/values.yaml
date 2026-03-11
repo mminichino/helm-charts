@@ -1,0 +1,36 @@
+#
+
+name: reaadb
+
+namespace: redis
+
+username: "admin@redis.com"
+
+localName: east
+remoteName: west
+
+localClusterName: cluster-east
+remoteClusterName: cluster-west
+
+localNamespace: redis
+remoteNamespace: redis
+
+dns:
+  domain: cluster.local
+
+externalSecret:
+  enabled: true
+  store:
+    kind: ClusterSecretStore
+    name: secret-store
+  clusterKey: cluster-key
+  databaseKey: reaadb-key
+
+memory: 1GB
+replication: true
+shards: 1
+placement: sparse
+port: 12012
+eviction: noeviction
+persistence: aofEverySecond
+proxyPolicy: all-master-shards

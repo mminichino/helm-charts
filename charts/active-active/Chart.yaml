@@ -1,0 +1,11 @@
+apiVersion: v2
+name: active-active
+description: A Helm chart for configuring an active-active Redis deployment
+type: application
+version: 0.1.0
+appVersion: "8.0.10"
+keywords:
+  - redis
+  - database
+maintainers:
+  - name: Michael Minichino

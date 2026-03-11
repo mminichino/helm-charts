@@ -1,0 +1,19 @@
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseActiveActiveDatabase
+metadata:
+  name: {{ .Values.name }}
+spec:
+  participatingClusters:
+    - name: {{ .Values.localClusterName }}
+    - name: {{ .Values.remoteClusterName }}
+  globalConfigurations:
+    shardCount: {{ .Values.shards }}
+    databasePort: {{ .Values.port }}
+    memorySize: {{ .Values.memory }}
+    persistence: {{ .Values.persistence }}
+    proxyPolicy: {{ .Values.proxyPolicy}}
+    evictionPolicy: {{ .Values.eviction }}
+    replication: {{ .Values.replication }}
+    shardsPlacement: {{ .Values.placement }}
+    databaseSecretName: "{{ .Values.name }}-secret"
+    tlsMode: disabled

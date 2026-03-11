@@ -1,0 +1,11 @@
+#
+
+name: reaadb
+namespace: ""
+clusterName: redis-enterprise-cluster
+
+dns:
+  domain: ""
+
+ingress:
+  name: haproxy

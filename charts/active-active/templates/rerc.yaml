@@ -1,0 +1,23 @@
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseRemoteCluster
+metadata:
+  name: {{ .Values.localName }}
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+spec:
+  recName: {{ .Values.localClusterName }}
+  recNamespace: {{ .Values.localNamespace }}
+  apiFqdnUrl: "api-{{ .Values.localClusterName }}.{{ .Values.dns.domain }}"
+  dbFqdnSuffix: "-db-{{ .Values.localClusterName }}.{{ .Values.dns.domain }}"
+  secretName: "{{ .Values.localName }}-reaadb-secret"
+---
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseRemoteCluster
+metadata:
+  name: {{ .Values.remoteName }}
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+spec:
+  recName: {{ .Values.remoteClusterName }}
+  recNamespace: {{ .Values.remoteNamespace }}
+  apiFqdnUrl: "api-{{ .Values.remoteClusterName }}.{{ .Values.dns.domain }}"
+  dbFqdnSuffix: "-db-{{ .Values.remoteClusterName }}.{{ .Values.dns.domain }}"
+  secretName: "{{ .Values.remoteName }}-reaadb-secret"
