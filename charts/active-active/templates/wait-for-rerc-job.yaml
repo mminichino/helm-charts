@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.name }}-wait-for-rerc
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ .Values.name }}-wait-for-rerc
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+rules:
+  - apiGroups: ["app.redislabs.com"]
+    resources: ["redisenterpriseremoteclusters"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ .Values.name }}-wait-for-rerc
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.name }}-wait-for-rerc
+    namespace: {{ .Values.namespace | default .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ .Values.name }}-wait-for-rerc
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.name }}-wait-for-rerc
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  template:
+    spec:
+      serviceAccountName: {{ .Values.name }}-wait-for-rerc
+      containers:
+        - name: wait-for-rerc
+          image: bitnami/kubectl:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Waiting for RERC {{ .Values.localName }} to be Active..."
+              kubectl wait --for=jsonpath='{.status.status}'=Active redisenterpriseremotecluster/{{ .Values.localName }} --timeout=300s -n {{ .Values.namespace | default .Release.Namespace }}
+              echo "Waiting for RERC {{ .Values.remoteName }} to be Active..."
+              kubectl wait --for=jsonpath='{.status.status}'=Active redisenterpriseremotecluster/{{ .Values.remoteName }} --timeout=300s -n {{ .Values.namespace | default .Release.Namespace }}
+      restartPolicy: OnFailure
+  backoffLimit: 3
