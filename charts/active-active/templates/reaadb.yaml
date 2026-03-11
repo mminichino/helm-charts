@@ -17,4 +17,4 @@ spec:
     replication: {{ .Values.replication }}
     shardsPlacement: {{ .Values.placement }}
     databaseSecretName: "{{ .Values.name }}-secret"
-    tlsMode: replica_ssl
+    tlsMode: enabled
