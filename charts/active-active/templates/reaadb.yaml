@@ -5,8 +5,8 @@ metadata:
   namespace: {{ .Values.namespace | default .Release.Namespace }}
 spec:
   participatingClusters:
-    - name: {{ .Values.localClusterName }}
-    - name: {{ .Values.remoteClusterName }}
+    - name: {{ .Values.localName }}
+    - name: {{ .Values.remoteName }}
   globalConfigurations:
     shardCount: {{ .Values.shards }}
     databasePort: {{ .Values.port }}
