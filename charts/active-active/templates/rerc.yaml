@@ -6,8 +6,8 @@ metadata:
 spec:
   recName: {{ .Values.localClusterName }}
   recNamespace: {{ .Values.localNamespace }}
-  apiFqdnUrl: "api-{{ .Values.localClusterName }}.{{ .Values.dns.domain }}"
-  dbFqdnSuffix: "-db-{{ .Values.localClusterName }}.{{ .Values.dns.domain }}"
+  apiFqdnUrl: "api-{{ .Values.localClusterName }}.{{ .Values.dns.localDomain }}"
+  dbFqdnSuffix: "-db-{{ .Values.localClusterName }}.{{ .Values.dns.localDomain }}"
   secretName: "redis-enterprise-{{ .Values.localName }}"
 ---
 apiVersion: app.redislabs.com/v1alpha1
@@ -18,6 +18,6 @@ metadata:
 spec:
   recName: {{ .Values.remoteClusterName }}
   recNamespace: {{ .Values.remoteNamespace }}
-  apiFqdnUrl: "api-{{ .Values.remoteClusterName }}.{{ .Values.dns.domain }}"
-  dbFqdnSuffix: "-db-{{ .Values.remoteClusterName }}.{{ .Values.dns.domain }}"
+  apiFqdnUrl: "api-{{ .Values.remoteClusterName }}.{{ .Values.dns.remoteDomain }}"
+  dbFqdnSuffix: "-db-{{ .Values.remoteClusterName }}.{{ .Values.dns.remoteDomain }}"
   secretName: "redis-enterprise-{{ .Values.remoteName }}"

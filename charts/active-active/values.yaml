@@ -16,7 +16,8 @@ localNamespace: redis
 remoteNamespace: redis
 
 dns:
-  domain: cluster.local
+  localDomain: cluster.local
+  remoteDomain: cluster.remote
 
 externalSecret:
   enabled: true
