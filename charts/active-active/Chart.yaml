@@ -2,7 +2,7 @@ apiVersion: v2
 name: active-active
 description: A Helm chart for configuring an active-active Redis deployment
 type: application
-version: 0.1.2
+version: 0.1.3
 appVersion: "8.0.10"
 keywords:
   - redis
