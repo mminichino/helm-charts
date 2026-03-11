@@ -3,6 +3,9 @@ kind: RedisEnterpriseRemoteCluster
 metadata:
   name: {{ .Values.localName }}
   namespace: {{ .Values.namespace | default .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-1"
 spec:
   recName: {{ .Values.localClusterName }}
   recNamespace: {{ .Values.localNamespace }}
@@ -15,6 +18,8 @@ kind: RedisEnterpriseRemoteCluster
 metadata:
   name: {{ .Values.remoteName }}
   namespace: {{ .Values.namespace | default .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-install
 spec:
   recName: {{ .Values.remoteClusterName }}
   recNamespace: {{ .Values.remoteNamespace }}
