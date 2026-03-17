@@ -1,0 +1,15 @@
+apiVersion: v2
+name: redis-insight
+description: Redis Agent Memory Server
+type: application
+version: 0.1.0
+appVersion: "3.2.0"
+keywords:
+  - insight
+  - redis
+home: https://redis.io/insight/
+sources:
+  - https://github.com/redis/RedisInsight
+maintainers:
+  - name: Redis Labs
+    url: https://redis.io

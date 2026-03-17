@@ -1,0 +1,19 @@
+#
+
+replicaCount: 1
+registry: docker.io
+repository: redislabs
+image: redisinsight
+tag: latest
+port: 5540
+
+ingress:
+  enabled: false
+  type: "haproxy"
+  username: "redis"
+  password: "password"
+
+dns:
+  domain: ""
+
+tls: false
