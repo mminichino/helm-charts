@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: delete-rerc
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": post-delete
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  template:
+    spec:
+      serviceAccountName: redis-enterprise-operator
+      containers:
+        - name: delete-rerc
+          image: bitnami/kubectl:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              kubectl delete redisenterpriseremotecluster/{{ .Values.localName }} --ignore-not-found -n {{ .Values.namespace | default .Release.Namespace }}
+              kubectl delete redisenterpriseremotecluster/{{ .Values.remoteName }} --ignore-not-found -n {{ .Values.namespace | default .Release.Namespace }}
+      restartPolicy: OnFailure
+  backoffLimit: 3
