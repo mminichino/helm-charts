@@ -9,7 +9,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: haproxy
     haproxy.org/auth-type: basic-auth
-    haproxy.org/auth-secret: redis-insight-credentials
+    haproxy.org/auth-secret: "{{ .Release.Namespace }}/redis-insight-credentials"
     haproxy.org/auth-realm: "Authentication Required"
   {{- else }}
   annotations:
