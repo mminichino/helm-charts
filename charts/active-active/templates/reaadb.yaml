@@ -17,6 +17,7 @@ spec:
     evictionPolicy: {{ .eviction | default $.Values.defaults.eviction }}
     replication: {{ .replication | default $.Values.defaults.replication }}
     shardsPlacement: {{ .placement | default $.Values.defaults.placement }}
+    ossCluster: {{ .ossCluster | default $.Values.defaults.ossCluster }}
     databaseSecretName: "{{ .name }}-secret"
     {{- $tlsMode := "replica_ssl" }}
     {{- if or .tls (and (not (hasKey . "tls")) $.Values.defaults.tls) }}

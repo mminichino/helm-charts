@@ -8,6 +8,7 @@ defaults:
   eviction: noeviction
   persistence: aofEverySecond
   proxyPolicy: all-master-shards
+  ossCluster: false
   tls: false
 
 databases:
@@ -20,6 +21,7 @@ databases:
     eviction: noeviction
     persistence: aofEverySecond
     proxyPolicy: all-master-shards
+    ossCluster: false
     tls: false
 
 username: "admin@redis.com"
