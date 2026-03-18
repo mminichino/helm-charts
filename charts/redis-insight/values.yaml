@@ -16,4 +16,6 @@ ingress:
 dns:
   domain: ""
 
-tls: false
+tls:
+  enabled: false
+  secretName: redis-insight-tls

@@ -38,20 +38,6 @@ spec:
           volumeMounts:
             - name: redis-insight-data
               mountPath: /data
-          {{- if .Values.tls }}
-          {{- $host := list }}
-          {{- if .Values.dns.domain }}
-          {{- $domain := .Values.dns.domain }}
-          {{- $name := printf "redis-insight.%s" $domain }}
-          {{- $host = append $host $name }}
-          {{- end }}
-          {{- $cert := genSelfSignedCert "redis-insight" nil $host 365 }}
-          env:
-            - name: RI_SERVER_TLS_CERT
-              value: {{ $cert.Cert | quote }}
-            - name: RI_SERVER_TLS_KEY
-              value: {{ $cert.Key | quote }}
-          {{- end }}
       volumes:
         - name: redis-insight-data
           persistentVolumeClaim:
