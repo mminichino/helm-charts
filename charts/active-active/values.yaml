@@ -37,3 +37,6 @@ port: 12012
 eviction: noeviction
 persistence: aofEverySecond
 proxyPolicy: all-master-shards
+
+ingress:
+  enabled: false

@@ -1,0 +1,19 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: ingress.v1.haproxy.org/v1
+kind: TCP
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+  annotations:
+    ingress.class: haproxy
+spec:
+  - name: {{ .Values.name }}
+    frontend:
+      name: "redis-{{ .Values.port }}"
+      binds:
+        - name: "redis-{{ .Values.port }}"
+          port: {{ .Values.port }}
+    service:
+      name: {{ .Values.name }}
+      port: {{ .Values.port }}
+{{- end }}
