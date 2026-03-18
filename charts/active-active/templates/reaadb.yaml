@@ -1,7 +1,4 @@
 {{- range .Values.databases }}
-{{- $databaseName := .name }}
-{{- $existingDatabase := (lookup "app.redislabs.com/v1alpha1" "RedisEnterpriseActiveActiveDatabase" $.Release.Namespace $databaseName) }}
-{{- if not $existingDatabase }}
 apiVersion: app.redislabs.com/v1alpha1
 kind: RedisEnterpriseActiveActiveDatabase
 metadata:
@@ -27,5 +24,4 @@ spec:
     {{- end }}
     tlsMode: {{ $tlsMode }}
 ---
-{{- end }}
 {{- end }}
