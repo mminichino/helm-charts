@@ -1,19 +1,22 @@
 {{- if .Values.ingress.enabled }}
+{{- range .Values.databases }}
 apiVersion: ingress.v1.haproxy.org/v1
 kind: TCP
 metadata:
-  name: {{ .Values.name }}
-  namespace: {{ .Values.namespace | default .Release.Namespace }}
+  name: {{ .name }}
+  namespace: {{ $.Values.namespace | default $.Release.Namespace }}
   annotations:
     ingress.class: haproxy
 spec:
-  - name: {{ .Values.name }}
+  - name: {{ .name }}
     frontend:
-      name: "redis-{{ .Values.port }}"
+      name: "redis-{{ .port }}"
       binds:
-        - name: "redis-{{ .Values.port }}"
-          port: {{ .Values.port }}
+        - name: "redis-{{ .port }}"
+          port: {{ .port }}
     service:
-      name: {{ .Values.name }}
-      port: {{ .Values.port }}
+      name: {{ .name }}
+      port: {{ .port }}
+---
+{{- end }}
 {{- end }}

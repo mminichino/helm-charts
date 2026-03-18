@@ -1,24 +1,27 @@
+{{- range .Values.databases }}
 apiVersion: app.redislabs.com/v1alpha1
 kind: RedisEnterpriseActiveActiveDatabase
 metadata:
-  name: {{ .Values.name }}
-  namespace: {{ .Values.namespace | default .Release.Namespace }}
+  name: {{ .name }}
+  namespace: {{ $.Values.namespace | default $.Release.Namespace }}
 spec:
   participatingClusters:
-    - name: {{ .Values.localName }}
-    - name: {{ .Values.remoteName }}
+    - name: {{ $.Values.localName }}
+    - name: {{ $.Values.remoteName }}
   globalConfigurations:
-    shardCount: {{ .Values.shards }}
-    databasePort: {{ .Values.port }}
-    memorySize: {{ .Values.memory }}
-    persistence: {{ .Values.persistence }}
-    proxyPolicy: {{ .Values.proxyPolicy}}
-    evictionPolicy: {{ .Values.eviction }}
-    replication: {{ .Values.replication }}
-    shardsPlacement: {{ .Values.placement }}
-    databaseSecretName: "{{ .Values.name }}-secret"
+    shardCount: {{ .shards | default $.Values.defaults.shards }}
+    databasePort: {{ .port }}
+    memorySize: {{ .memory | default $.Values.defaults.memory }}
+    persistence: {{ .persistence | default $.Values.defaults.persistence }}
+    proxyPolicy: {{ .proxyPolicy | default $.Values.defaults.proxyPolicy }}
+    evictionPolicy: {{ .eviction | default $.Values.defaults.eviction }}
+    replication: {{ .replication | default $.Values.defaults.replication }}
+    shardsPlacement: {{ .placement | default $.Values.defaults.placement }}
+    databaseSecretName: "{{ .name }}-secret"
     {{- $tlsMode := "replica_ssl" }}
-    {{- if .Values.tls }}
+    {{- if or .tls (and (not (hasKey . "tls")) $.Values.defaults.tls) }}
     {{- $tlsMode = "enabled" }}
     {{- end }}
     tlsMode: {{ $tlsMode }}
+---
+{{- end }}

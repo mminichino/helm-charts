@@ -1,12 +1,30 @@
 #
 
-name: reaadb
+defaults:
+  memory: 1GB
+  replication: true
+  shards: 1
+  placement: sparse
+  eviction: noeviction
+  persistence: aofEverySecond
+  proxyPolicy: all-master-shards
+  tls: false
+
+databases:
+  - name: reaadb
+    memory: 1GB
+    replication: true
+    shards: 1
+    placement: sparse
+    port: 12012
+    eviction: noeviction
+    persistence: aofEverySecond
+    proxyPolicy: all-master-shards
+    tls: false
 
 namespace: ""
 
 username: "admin@redis.com"
-
-tls: true
 
 localName: east
 remoteName: west
@@ -28,15 +46,6 @@ externalSecret:
     name: secret-store
   clusterKey: cluster-key
   databaseKey: reaadb-key
-
-memory: 1GB
-replication: true
-shards: 1
-placement: sparse
-port: 12012
-eviction: noeviction
-persistence: aofEverySecond
-proxyPolicy: all-master-shards
 
 ingress:
   enabled: false
