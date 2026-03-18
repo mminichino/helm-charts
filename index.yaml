@@ -3,6 +3,21 @@ entries:
   active-active:
   - apiVersion: v2
     appVersion: 8.0.10
+    created: "2026-03-18T22:07:29.481589869Z"
+    description: A Helm chart for configuring an active-active Redis deployment
+    digest: 9b3867192f5857346e756d6f1024d342066609972374e22f014404d397cb2eee
+    keywords:
+    - redis
+    - database
+    maintainers:
+    - name: Michael Minichino
+    name: active-active
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/active-active-0.3.5/active-active-0.3.5.tgz
+    version: 0.3.5
+  - apiVersion: v2
+    appVersion: 8.0.10
     created: "2026-03-18T21:58:06.310563614Z"
     description: A Helm chart for configuring an active-active Redis deployment
     digest: e8a0d05925bc487df94e574adca048e578b188a39398b08ec1d54da2bf0fa34b
@@ -2573,4 +2588,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-18T21:58:06.310903581Z"
+generated: "2026-03-18T22:07:29.482234937Z"
