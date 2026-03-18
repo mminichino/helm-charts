@@ -4,7 +4,7 @@ apiVersion: ingress.v1.haproxy.org/v1
 kind: TCP
 metadata:
   name: {{ .name }}
-  namespace: {{ $.Values.namespace | default $.Release.Namespace }}
+  namespace: {{ $.Release.Namespace }}
   annotations:
     ingress.class: haproxy
 spec:

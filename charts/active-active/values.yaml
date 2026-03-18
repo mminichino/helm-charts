@@ -22,8 +22,6 @@ databases:
     proxyPolicy: all-master-shards
     tls: false
 
-namespace: ""
-
 username: "admin@redis.com"
 
 localName: east

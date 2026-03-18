@@ -1,9 +1,12 @@
 {{- range .Values.databases }}
+{{- $databaseName := .name }}
+{{- $existingDatabase := (lookup "app.redislabs.com/v1alpha1" "RedisEnterpriseActiveActiveDatabase" $.Release.Namespace $databaseName) }}
+{{- if not $existingDatabase }}
 apiVersion: app.redislabs.com/v1alpha1
 kind: RedisEnterpriseActiveActiveDatabase
 metadata:
   name: {{ .name }}
-  namespace: {{ $.Values.namespace | default $.Release.Namespace }}
+  namespace: {{ $.Release.Namespace }}
 spec:
   participatingClusters:
     - name: {{ $.Values.localName }}
@@ -24,4 +27,5 @@ spec:
     {{- end }}
     tlsMode: {{ $tlsMode }}
 ---
+{{- end }}
 {{- end }}
