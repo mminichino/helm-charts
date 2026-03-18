@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.localName }}
   namespace: {{ .Values.namespace | default .Release.Namespace }}
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook": pre-install
     "helm.sh/hook-weight": "-1"
 spec:
   recName: {{ .Values.localClusterName }}
@@ -19,7 +19,7 @@ metadata:
   name: {{ .Values.remoteName }}
   namespace: {{ .Values.namespace | default .Release.Namespace }}
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook": pre-install
     "helm.sh/hook-weight": "-1"
 spec:
   recName: {{ .Values.remoteClusterName }}
