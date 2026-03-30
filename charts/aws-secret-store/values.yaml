@@ -1,0 +1,7 @@
+#
+
+serviceAccount: "external-secrets"
+region: "us-east-1"
+argo:
+  patch: false
+  namespace: "argocd"
