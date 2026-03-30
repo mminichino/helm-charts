@@ -442,6 +442,23 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/argocd-config-0.1.0/argocd-config-0.1.0.tgz
     version: 0.1.0
+  aws-secret-store:
+  - apiVersion: v2
+    appVersion: 1.2.1
+    created: "2026-03-30T22:07:32.822214222Z"
+    description: A Helm chart for AWS Secret Manager External Secrets
+    digest: 42f86f3380a00e3d82df00a0409775d2adb577a3521711170984129e617fc6cf
+    keywords:
+    - vault
+    - aws
+    - secrets
+    maintainers:
+    - name: Michael Minichino
+    name: aws-secret-store
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/aws-secret-store-0.1.0/aws-secret-store-0.1.0.tgz
+    version: 0.1.0
   external-dns:
   - apiVersion: v2
     appVersion: 0.19.0
@@ -2633,4 +2650,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-18T23:12:09.051068206Z"
+generated: "2026-03-30T22:07:32.822480625Z"
