@@ -6,6 +6,8 @@ repository: redislabs
 image: redisinsight
 tag: latest
 port: 5540
+storage: 2Gi
+storageClass: ""
 
 ingress:
   enabled: false
