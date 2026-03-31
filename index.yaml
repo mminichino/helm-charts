@@ -2495,6 +2495,25 @@ entries:
   redis-insight:
   - apiVersion: v2
     appVersion: 3.2.0
+    created: "2026-03-31T16:30:50.69496959Z"
+    description: Redis Agent Memory Server
+    digest: 67f769ae1646fea6196ed52c836067f3da2a6a1eb3ed81c4f71ee1ec82d24de9
+    home: https://redis.io/insight/
+    keywords:
+    - insight
+    - redis
+    maintainers:
+    - name: Redis Labs
+      url: https://redis.io
+    name: redis-insight
+    sources:
+    - https://github.com/redis/RedisInsight
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/redis-insight-0.1.8/redis-insight-0.1.8.tgz
+    version: 0.1.8
+  - apiVersion: v2
+    appVersion: 3.2.0
     created: "2026-03-18T19:41:03.657526163Z"
     description: Redis Agent Memory Server
     digest: 0b1ce84494eb4c0be070259f305e436ec5e7b45f448fda1c3332a8addada9bf9
@@ -2666,4 +2685,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-31T00:31:15.797635833Z"
+generated: "2026-03-31T16:30:50.695318911Z"
