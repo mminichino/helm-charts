@@ -35,3 +35,4 @@ externalSecret:
     kind: ClusterSecretStore
     name: ""
   key: ""
+  property: ""
