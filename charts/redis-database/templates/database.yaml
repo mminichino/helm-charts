@@ -21,6 +21,11 @@ spec:
   persistence: {{ .Values.persistence }}
   redisVersion: {{ .Values.version | quote }}
   evictionPolicy: {{ .Values.eviction }}
+  {{- if .Values.ossCluster }}
+  ossCluster: {{ .Values.ossCluster }}
+  ossClusterSettings:
+    enableExternalAccess: {{ .Values.ossClusterExternalAccess }}
+  {{- end }}
   {{- if .Values.tls.enabled }}
   tlsMode: "enabled"
   {{- end }}

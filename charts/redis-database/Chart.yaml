@@ -2,8 +2,8 @@ apiVersion: v2
 name: redis-database
 description: Deploy a REDB resource with the Redis Enterprise Operator
 type: application
-version: 0.2.6
-appVersion: "8.0.2"
+version: 0.2.7
+appVersion: "8.0.16"
 keywords:
   - kubernetes
   - redis

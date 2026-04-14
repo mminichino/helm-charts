@@ -100,5 +100,7 @@ spec:
       type: LoadBalancer
       {{- end }}
   {{- if .Values.license }}
-  license: {{ .Values.license | quote }}
+  licenseSecretName: "{{ .Values.name }}-license"
   {{- end }}
+  ossClusterSettings:
+    externalAccessType: LoadBalancer

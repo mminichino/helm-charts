@@ -13,6 +13,7 @@ placement: sparse
 port: 12000
 eviction: noeviction
 ossCluster: false
+ossClusterExternalAccess: true
 proxyPolicy: all-master-shards
 persistence: aofEverySecond
 version: "latest"
