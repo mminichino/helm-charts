@@ -1032,6 +1032,25 @@ entries:
     version: 0.1.0
   redis-cluster:
   - apiVersion: v2
+    appVersion: 8.0.16
+    created: "2026-04-14T23:14:02.398690789Z"
+    description: Deploy a REC resource with the Redis Enterprise Operator
+    digest: 7e3c0e7ca629a371120e42fda1165f2cf32d5b362c17794ec3fb73ebefd2ac96
+    home: https://github.com/mminichino/helm-charts
+    keywords:
+    - kubernetes
+    - redis
+    maintainers:
+    - name: Michael Minichino
+      url: https://github.com/mminichino/helm-charts
+    name: redis-cluster
+    sources:
+    - https://github.com/mminichino/helm-charts
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/redis-cluster-0.4.5/redis-cluster-0.4.5.tgz
+    version: 0.4.5
+  - apiVersion: v2
     appVersion: 8.0.10
     created: "2026-04-03T21:56:58.136639929Z"
     description: Deploy a REC resource with the Redis Enterprise Operator
@@ -1802,6 +1821,25 @@ entries:
     - https://github.com/mminichino/helm-charts/releases/download/redis-cluster-0.1.0/redis-cluster-0.1.0.tgz
     version: 0.1.0
   redis-database:
+  - apiVersion: v2
+    appVersion: 8.0.16
+    created: "2026-04-14T23:14:02.535779227Z"
+    description: Deploy a REDB resource with the Redis Enterprise Operator
+    digest: 918befe7f222a7a8aa50983ee1b94b1eb1e8cfacecbae755036637ab6463f7ac
+    home: https://github.com/mminichino/helm-charts
+    keywords:
+    - kubernetes
+    - redis
+    maintainers:
+    - name: Michael Minichino
+      url: https://github.com/mminichino/helm-charts
+    name: redis-database
+    sources:
+    - https://github.com/mminichino/helm-charts
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/redis-database-0.2.7/redis-database-0.2.7.tgz
+    version: 0.2.7
   - apiVersion: v2
     appVersion: 8.0.2
     created: "2026-04-02T02:17:52.816907536Z"
@@ -2742,4 +2780,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2026-04-03T21:56:58.137542796Z"
+generated: "2026-04-14T23:14:02.536407017Z"
