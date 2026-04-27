@@ -104,3 +104,5 @@ spec:
   {{- end }}
   ossClusterSettings:
     externalAccessType: LoadBalancer
+  upgradeSpec:
+    autoUpgradeRedisEnterprise: true

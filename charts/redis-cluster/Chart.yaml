@@ -2,8 +2,8 @@ apiVersion: v2
 name: redis-cluster
 description: Deploy a REC resource with the Redis Enterprise Operator
 type: application
-version: 0.4.6
-appVersion: "8.0.16"
+version: 0.4.7
+appVersion: "8.0.18"
 keywords:
   - kubernetes
   - redis
