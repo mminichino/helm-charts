@@ -44,3 +44,5 @@ externalSecret:
     name: ""
   key: ""
   property: ""
+
+recover: false
