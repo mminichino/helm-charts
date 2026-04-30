@@ -475,6 +475,27 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/aws-secret-store-0.1.0/aws-secret-store-0.1.0.tgz
     version: 0.1.0
+  context-surfaces:
+  - apiVersion: v2
+    appVersion: v0.1.0
+    created: "2026-04-30T15:18:11.906278485Z"
+    description: Context Surfaces deployment chart
+    digest: 949ca2540deb4c5695031210a3205b278efd3ff0e6edb7896b43cdf528d8a225
+    home: https://redis.io/resources/redis-for-ai-the-real-time-context-engine-for-accurate-scalable-ai-apps/
+    keywords:
+    - context-surfaces
+    - ai
+    - mcp
+    - redis
+    - on-prem
+    maintainers:
+    - email: support@redis.com
+      name: Redis Labs
+    name: context-surfaces
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/context-surfaces-0.1.0-1/context-surfaces-0.1.0-1.tgz
+    version: 0.1.0-1
   external-dns:
   - apiVersion: v2
     appVersion: 0.19.0
@@ -2837,4 +2858,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2026-04-27T20:07:48.029627271Z"
+generated: "2026-04-30T15:18:11.906535919Z"
