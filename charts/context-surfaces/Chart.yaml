@@ -1,0 +1,16 @@
+apiVersion: v2
+appVersion: v0.1.0
+description: Context Surfaces deployment chart
+home: https://redis.io/resources/redis-for-ai-the-real-time-context-engine-for-accurate-scalable-ai-apps/
+keywords:
+- context-surfaces
+- ai
+- mcp
+- redis
+- on-prem
+maintainers:
+- email: support@redis.com
+  name: Redis Labs
+name: context-surfaces
+type: application
+version: 0.1.0-1

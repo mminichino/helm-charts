@@ -1,0 +1,158 @@
+{{- if and .Values.postInstallJob.enabled (eq .Values.authMode "local") }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "cs.fullname" . }}-post-install
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cs.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-failed
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "cs.fullname" . }}-post-install
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cs.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-failed
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+      - list
+  - apiGroups:
+      - ""
+    resources:
+      - pods/exec
+    verbs:
+      - create
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - create
+      - get
+      - patch
+      - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "cs.fullname" . }}-post-install
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cs.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-failed
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "cs.fullname" . }}-post-install
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "cs.fullname" . }}-post-install
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "cs.fullname" . }}-retrieve-admin-key
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cs.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: {{ .Values.postInstallJob.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.postInstallJob.activeDeadlineSeconds }}
+  template:
+    metadata:
+      labels:
+        {{- include "cs.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: post-install
+    spec:
+      serviceAccountName: {{ include "cs.fullname" . }}-post-install
+      restartPolicy: Never
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: retrieve-admin-key
+          image: "{{ .Values.postInstallJob.image.registry }}/{{ .Values.postInstallJob.image.repository }}:{{ .Values.postInstallJob.image.tag }}"
+          imagePullPolicy: {{ .Values.postInstallJob.image.pullPolicy }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          env:
+            - name: TARGET_NAMESPACE
+              value: {{ .Release.Namespace | quote }}
+            - name: POD_WAIT_TIMEOUT
+              value: {{ .Values.postInstallJob.podWaitTimeoutSeconds | quote }}
+            - name: KEY_WAIT_TIMEOUT
+              value: {{ .Values.postInstallJob.keyFileWaitTimeoutSeconds | quote }}
+            - name: SECRET_NAME
+              value: {{ include "cs.initialAdminKeySecretName" . | quote }}
+            - name: SECRET_KEY
+              value: {{ include "cs.initialAdminKeySecretKey" . | quote }}
+          command:
+            - /bin/bash
+            - -ec
+            - |
+              set -euo pipefail
+              SELECTOR='app.kubernetes.io/name={{ include "cs.name" . }},app.kubernetes.io/instance={{ .Release.Name }},app.kubernetes.io/component=admin'
+              deadline_pod=$((SECONDS + ${POD_WAIT_TIMEOUT}))
+              ADMIN_POD=""
+              while (( SECONDS < deadline_pod )); do
+                ADMIN_POD=$(kubectl get pods -n "${TARGET_NAMESPACE}" -l "${SELECTOR}" \
+                  -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || true)
+                if [[ -n "${ADMIN_POD}" ]]; then
+                  ready=$(kubectl get pod -n "${TARGET_NAMESPACE}" "${ADMIN_POD}" \
+                    -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}' 2>/dev/null || true)
+                  if [[ "${ready}" == "True" ]]; then
+                    break
+                  fi
+                fi
+                sleep 5
+              done
+              if [[ -z "${ADMIN_POD}" ]]; then
+                echo "ERROR: admin pod not ready within ${POD_WAIT_TIMEOUT}s (selector: ${SELECTOR})" >&2
+                exit 1
+              fi
+              if ! kubectl exec -n "${TARGET_NAMESPACE}" "${ADMIN_POD}" -c admin -- \
+                test -f /opt/initialAdminKey.txt 2>/dev/null; then
+                echo "ERROR: /opt/initialAdminKey.txt not found within ${KEY_WAIT_TIMEOUT}s" >&2
+                exit 1
+              fi
+              API_KEY="$(kubectl exec -n "${TARGET_NAMESPACE}" "${ADMIN_POD}" -c admin -- \
+                cat /opt/initialAdminKey.txt | sed '/^#/d' | tr -d '\r\n')"
+              kubectl create secret generic "${SECRET_NAME}" \
+                --from-literal="${SECRET_KEY}=${API_KEY}" \
+                -n "${TARGET_NAMESPACE}" \
+                --dry-run=client -o yaml | kubectl apply -f -
+              echo "Stored initial admin API key in Secret ${SECRET_NAME} (data key: ${SECRET_KEY})."
+              echo "Retrieve: kubectl get secret -n ${TARGET_NAMESPACE} ${SECRET_NAME} -o jsonpath='{.data.${SECRET_KEY}}' | base64 -d"
+{{- end }}

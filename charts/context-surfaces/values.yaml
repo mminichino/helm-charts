@@ -1,0 +1,123 @@
+# Authentication mode for on-prem (API key only)
+authMode: local
+
+# Admin server configuration
+admin:
+  replicaCount: 1
+  image:
+    registry: us-docker.pkg.dev
+    prefix: ""
+    repository: context-surfaces
+    name: admin
+    pullPolicy: IfNotPresent
+  service:
+    type: NodePort
+    port: 8080
+    nodePort: 30080
+  resources:
+    limits:
+      cpu: "1"
+      memory: 1Gi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: 8080
+    initialDelaySeconds: 15
+    periodSeconds: 20
+  readinessProbe:
+    httpGet:
+      path: /health
+      port: 8080
+    initialDelaySeconds: 5
+    periodSeconds: 10
+
+# MCP server configuration for on-prem
+mcp:
+  enabled: true
+  replicaCount: 1
+  image:
+    registry: us-docker.pkg.dev
+    prefix: ""
+    repository: context-surfaces
+    name: mcp
+    pullPolicy: IfNotPresent
+  service:
+    type: NodePort
+    port: 8081
+    nodePort: 30081
+  resources:
+    limits:
+      cpu: "1"
+      memory: 1Gi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+# Redis configuration
+redis:
+  addr: "redis-master.redis.svc.cluster.local:6379"
+  db: 0
+  tlsEnabled: false
+
+# Use existing secrets (created manually)
+# These secrets should be created before installing the chart
+secrets:
+  existingSecret: ""
+  redisPassword: ""
+  secretEncryptionKey: ""
+
+license:
+  existingSecret: ""
+  key: ""
+
+# Production environment settings
+environment: production
+logLevel: info
+
+# Storage backend - must be redis
+storageBackend: redis
+
+# TLS requirement
+requireTLS: false
+
+# For air-gapped environments, you may need:
+# imagePullSecrets:
+#   - name: local-registry-secret
+
+# Post-install Job: reads the initial admin API key from the admin pod and stores it in a Secret (local auth only).
+postInstallJob:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: bitnami/kubectl
+    tag: latest
+    pullPolicy: IfNotPresent
+  backoffLimit: 2
+  activeDeadlineSeconds: 900
+  podWaitTimeoutSeconds: 600
+  keyFileWaitTimeoutSeconds: 300
+  adminApiKeySecret:
+    name: ""
+    key: key
+
+# Service account configuration
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+
+# External secrets
+externalSecret:
+  enabled: false
+  store:
+    kind: ClusterSecretStore
+    name: ""
+  password:
+    key: ""
+    property: ""
+  encryption:
+    key: ""
+    property: ""
