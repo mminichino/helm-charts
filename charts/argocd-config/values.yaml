@@ -1,7 +1,7 @@
 #
 
-name: "redis-apps"
-description: "Redis Apps"
+name: "argo-apps"
+description: "Argo Apps"
 repository: ""
 externalSecret:
   store:
