@@ -1,5 +1,6 @@
 #
 
+serviceAccount: "external-secrets-sa"
 project: ""
 argo:
   patch: false
