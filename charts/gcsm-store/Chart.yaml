@@ -2,8 +2,8 @@ apiVersion: v2
 name: gcsm-store
 description: A Helm chart for Google Cloud Secret Manager External Secrets
 type: application
-version: 0.1.6
-appVersion: "0.20.4"
+version: 0.1.7
+appVersion: "1.2.1"
 keywords:
   - vault
   - gcp
