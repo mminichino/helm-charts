@@ -39,7 +39,7 @@ spec:
             - {{ .Values.dapiPort | quote }}
             - "--self-sign"
             {{- if .Values.clusterCaCert }}
-            - "--cluster-ca-cert"
+            - "--cluster-cert"
             - {{ include "couchbase-cng.clusterCaMountPath" . | quote }}
             {{- end }}
             {{- if .Values.daemon }}
