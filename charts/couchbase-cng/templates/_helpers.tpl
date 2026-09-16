@@ -28,6 +28,14 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- printf "%s-credentials" (include "couchbase-cng.fullname" .) -}}
 {{- end }}
 
+{{- define "couchbase-cng.clusterCaSecretName" -}}
+{{- printf "%s-cluster-ca" (include "couchbase-cng.fullname" .) -}}
+{{- end }}
+
+{{- define "couchbase-cng.clusterCaMountPath" -}}
+/certs/cluster-ca.crt
+{{- end }}
+
 {{- define "couchbase-cng.namespace" -}}
 {{- .Values.namespace | default .Release.Namespace -}}
 {{- end }}

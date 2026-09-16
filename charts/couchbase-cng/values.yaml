@@ -6,19 +6,20 @@ namespace: ""
 replicaCount: 1
 
 image:
-  repository: couchbase/cloud-native-gateway
-  tag: latest
+  repository: docker.io/couchbase/cloud-native-gateway
+  tag: ""
   pullPolicy: IfNotPresent
 
 cbHost: "couchbase-server.example.com"
 username: "Administrator"
 password: ""
 
+clusterCaCert: ""
+
 webPort: 9091
 dataPort: 18098
 dapiPort: 18100
 
-# Keep the process running if Couchbase is temporarily unreachable (recommended for Kubernetes)
 daemon: true
 
 service:

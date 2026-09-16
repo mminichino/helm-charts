@@ -2,8 +2,8 @@ apiVersion: v2
 name: couchbase-cng
 description: Deploy Couchbase Cloud Native Gateway
 type: application
-version: 0.1.0
-appVersion: "1.0.0"
+version: 0.1.1
+appVersion: "1.2.1"
 keywords:
   - couchbase
   - cloud-native-gateway

@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: cng
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: protostellar
@@ -38,6 +38,10 @@ spec:
             - "--dapi-port"
             - {{ .Values.dapiPort | quote }}
             - "--self-sign"
+            {{- if .Values.clusterCaCert }}
+            - "--cluster-ca-cert"
+            - {{ include "couchbase-cng.clusterCaMountPath" . | quote }}
+            {{- end }}
             {{- if .Values.daemon }}
             - "--daemon"
             {{- end }}
@@ -47,6 +51,12 @@ spec:
                 secretKeyRef:
                   name: {{ include "couchbase-cng.secretName" . }}
                   key: password
+          {{- if .Values.clusterCaCert }}
+          volumeMounts:
+            - name: cluster-ca
+              mountPath: /certs
+              readOnly: true
+          {{- end }}
           livenessProbe:
             httpGet:
               path: /health
@@ -63,6 +73,12 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+      {{- if .Values.clusterCaCert }}
+      volumes:
+        - name: cluster-ca
+          secret:
+            secretName: {{ include "couchbase-cng.clusterCaSecretName" . }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
