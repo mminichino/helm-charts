@@ -1,0 +1,21 @@
+Couchbase Cloud Native Gateway has been deployed.
+
+  Release: {{ .Release.Name }}
+  Namespace: {{ include "couchbase-cng.namespace" . }}
+  Service: {{ include "couchbase-cng.fullname" . }} ({{ .Values.service.type }})
+
+Ports:
+  Web / health / metrics: {{ .Values.service.ports.web }}
+  Protostellar gRPC:      {{ .Values.service.ports.data }}
+  Data API:               {{ .Values.service.ports.dapi }}
+
+Credentials secret: {{ include "couchbase-cng.secretName" . }}
+{{- if .Values.externalSecret.enabled }}
+  Source: ExternalSecret (key={{ .Values.externalSecret.key }})
+{{- else }}
+  Source: values (username/password)
+{{- end }}
+
+Check health:
+  kubectl -n {{ include "couchbase-cng.namespace" . }} port-forward svc/{{ include "couchbase-cng.fullname" . }} {{ .Values.service.ports.web }}:{{ .Values.service.ports.web }}
+  curl localhost:{{ .Values.service.ports.web }}/health

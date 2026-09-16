@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "couchbase-cng.fullname" . }}
+  namespace: {{ include "couchbase-cng.namespace" . }}
+  labels:
+    {{- include "couchbase-cng.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "couchbase-cng.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "couchbase-cng.selectorLabels" . | nindent 8 }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      containers:
+        - name: cng
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: protostellar
+              containerPort: {{ .Values.dataPort }}
+            - name: data-api
+              containerPort: {{ .Values.dapiPort }}
+            - name: web
+              containerPort: {{ .Values.webPort }}
+          args:
+            - "--cb-host"
+            - {{ .Values.cbHost | quote }}
+            - "--cb-user"
+            - {{ .Values.username | quote }}
+            - "--dapi-port"
+            - {{ .Values.dapiPort | quote }}
+            - "--self-sign"
+            {{- if .Values.daemon }}
+            - "--daemon"
+            {{- end }}
+          env:
+            - name: STG_CB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "couchbase-cng.secretName" . }}
+                  key: password
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: web
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: web
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

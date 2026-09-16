@@ -1,0 +1,48 @@
+#
+
+name: "couchbase-cng"
+namespace: ""
+
+replicaCount: 1
+
+image:
+  repository: couchbase/cloud-native-gateway
+  tag: latest
+  pullPolicy: IfNotPresent
+
+cbHost: "couchbase-server.example.com"
+username: "Administrator"
+password: ""
+
+webPort: 9091
+dataPort: 18098
+dapiPort: 18100
+
+# Keep the process running if Couchbase is temporarily unreachable (recommended for Kubernetes)
+daemon: true
+
+service:
+  type: LoadBalancer
+  annotations: {}
+  ports:
+    web: 9091
+    data: 18098
+    dapi: 18100
+
+externalSecret:
+  enabled: false
+  store:
+    kind: ClusterSecretStore
+    name: ""
+  key: ""
+  property: ""
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+podAnnotations: {}

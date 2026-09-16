@@ -1,0 +1,16 @@
+apiVersion: v2
+name: couchbase-cng
+description: Deploy Couchbase Cloud Native Gateway
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - couchbase
+  - cloud-native-gateway
+  - cng
+home: https://github.com/mminichino/helm-charts
+sources:
+  - https://github.com/mminichino/helm-charts
+maintainers:
+  - name: Michael Minichino
+    url: https://github.com/mminichino/helm-charts
