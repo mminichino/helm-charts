@@ -515,6 +515,26 @@ entries:
   couchbase-cng:
   - apiVersion: v2
     appVersion: 1.2.1
+    created: "2026-09-16T15:56:36.417160174Z"
+    description: Deploy Couchbase Cloud Native Gateway
+    digest: b2faf97e7299ab1b5d9687fbbbb1e809a61fd0a1b428ec8a2af9a34c86a884fd
+    home: https://github.com/mminichino/helm-charts
+    keywords:
+    - couchbase
+    - cloud-native-gateway
+    - cng
+    maintainers:
+    - name: Michael Minichino
+      url: https://github.com/mminichino/helm-charts
+    name: couchbase-cng
+    sources:
+    - https://github.com/mminichino/helm-charts
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/couchbase-cng-0.1.2/couchbase-cng-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.2.1
     created: "2026-09-16T15:40:17.365156017Z"
     description: Deploy Couchbase Cloud Native Gateway
     digest: 6481605b787ced2b48a71fd7d6b8f261630f9bf0e6458b9ce109813e99792453
@@ -2947,4 +2967,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2026-09-16T15:40:17.365582032Z"
+generated: "2026-09-16T15:56:36.417679219Z"
