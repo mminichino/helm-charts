@@ -512,6 +512,27 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/context-surfaces-0.1.0-1/context-surfaces-0.1.0-1.tgz
     version: 0.1.0-1
+  couchbase-cng:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2026-09-16T14:27:32.452351185Z"
+    description: Deploy Couchbase Cloud Native Gateway
+    digest: d491699f702da4970177171963aa7ca7a795a081b7b69a7a6e1c4c7300abf338
+    home: https://github.com/mminichino/helm-charts
+    keywords:
+    - couchbase
+    - cloud-native-gateway
+    - cng
+    maintainers:
+    - name: Michael Minichino
+      url: https://github.com/mminichino/helm-charts
+    name: couchbase-cng
+    sources:
+    - https://github.com/mminichino/helm-charts
+    type: application
+    urls:
+    - https://github.com/mminichino/helm-charts/releases/download/couchbase-cng-0.1.0/couchbase-cng-0.1.0.tgz
+    version: 0.1.0
   external-dns:
   - apiVersion: v2
     appVersion: 0.19.0
@@ -2906,4 +2927,4 @@ entries:
     urls:
     - https://github.com/mminichino/helm-charts/releases/download/session-api-0.1.0/session-api-0.1.0.tgz
     version: 0.1.0
-generated: "2026-07-21T15:00:37.26464776Z"
+generated: "2026-09-16T14:27:32.452710015Z"
